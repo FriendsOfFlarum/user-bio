@@ -1,0 +1,39 @@
+{
+    "name": "fof/user-bio",
+    "description": "Add the user bio back into Flarum",
+    "keywords": [
+        "flarum",
+        "Friends of Flarum"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^0.1.0-beta.8"
+    },
+    "authors": [
+        {
+            "name": "Charlie K",
+            "email": "charlie.k@redevs.org",
+            "homepage": "https://redevs.org",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "FoF\\UserBio\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "FoF User Bio",
+            "icon": {
+                "name": "fas fa-pen",
+                "backgroundColor": "#e74c3c",
+                "color": "#fff"
+            }
+        },
+        "flagrow": {
+            "discuss": ""
+        }
+    }
+}
