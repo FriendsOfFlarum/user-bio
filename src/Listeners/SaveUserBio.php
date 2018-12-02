@@ -1,18 +1,18 @@
 <?php
-/**
- *  This file is part of fof/user-bio.
+
+/*
+ * This file is part of fof/user-bio.
  *
- *  Copyright (c) 2018.
- *
+ * Copyright (c) 2018 FriendsOfFlarum.
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
+
 namespace FoF\UserBio\Listeners;
 
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Event\Saving;
-use Flarum\Api\Serializer\UserSerializer;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class SaveUserBio
@@ -29,6 +29,7 @@ class SaveUserBio
 
     /**
      * @param Saving $event
+     *
      * @throws \Flarum\User\Exception\PermissionDeniedException
      */
     public function saving(Saving $event)
@@ -43,7 +44,7 @@ class SaveUserBio
         $attributes = array_get($data, 'attributes', []);
 
         if (isset($attributes['bio'])) {
-            if (! $isSelf) {
+            if (!$isSelf) {
                 $this->assertPermission($canEdit);
             }
             $user->bio = $attributes['bio'];
