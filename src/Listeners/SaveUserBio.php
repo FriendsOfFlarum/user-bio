@@ -49,16 +49,15 @@ class SaveUserBio
             if (!$isSelf) {
                 // Make sure that the actor has the permission to modify the user
                 $this->assertPermission($canEdit);
-            }
-            else {
+            } else {
                 // Forbid the actor from changing the bio if suspended
                 $suspendedUntil = $user->suspended_until;
-                
+
                 if ($suspendedUntil && $suspendedUntil->gt(Carbon::now())) {
-                    throw new PermissionDeniedException;
+                    throw new PermissionDeniedException();
                 }
             }
-            
+
             $user->bio = $attributes['bio'];
 
             $user->save();
