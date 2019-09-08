@@ -17,7 +17,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/resources/less/UserBio.less'),
+        ->css(__DIR__.'/resources/less/forum.less'),
     new Extend\Locales(__DIR__.'/resources/locale'),
     function (Dispatcher $events) {
         $events->subscribe(Listeners\AddUserBioAttribute::class);
