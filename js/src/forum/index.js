@@ -16,7 +16,8 @@ app.initializers.add('fof-user-bio', () => {
             UserBio.component({
                 user,
                 editable: this.props.editable
-            })
+            }),
+            -100,
         );
     });
 });
