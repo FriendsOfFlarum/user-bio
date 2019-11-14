@@ -90,7 +90,7 @@ export default class UserBio extends Component {
     if (user.bio() !== value) {
       this.loading = true;
 
-      user.save({bio: value})
+      user.save({bio: value.substring(0, 500)})
         .catch(() => {})
         .then(() => {
           this.loading = false;
