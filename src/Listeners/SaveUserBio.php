@@ -58,7 +58,7 @@ class SaveUserBio
                 }
             }
 
-            $user->bio = $attributes['bio'];
+            $user->bio = substr($attributes['bio'], 0, 500);
 
             $user->save();
         }
