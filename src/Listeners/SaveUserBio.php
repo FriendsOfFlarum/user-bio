@@ -11,11 +11,11 @@
 
 namespace FoF\UserBio\Listeners;
 
-use Carbon\Carbon;
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Event\Saving;
-use Flarum\User\Exception\PermissionDeniedException;
+use FoF\UserBio\Event\BioChanged;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Arr;
 
 class SaveUserBio
 {
@@ -40,25 +40,14 @@ class SaveUserBio
         $data = $event->data;
         $actor = $event->actor;
 
-        $isSelf = $actor->id === $user->id;
-        $canEdit = $actor->can('edit', $user);
-
-        $attributes = array_get($data, 'attributes', []);
+        $attributes = Arr::get($data, 'attributes', []);
 
         if (isset($attributes['bio'])) {
-            if (!$isSelf) {
-                // Make sure that the actor has the permission to modify the user
-                $this->assertPermission($canEdit);
-            } else {
-                // Forbid the actor from changing the bio if suspended
-                $suspendedUntil = $user->suspended_until;
-
-                if ($suspendedUntil && $suspendedUntil->gt(Carbon::now())) {
-                    throw new PermissionDeniedException();
-                }
-            }
+            $this->assertCan($actor, 'editBio', $user);
 
             $user->bio = $attributes['bio'];
+
+            $user->raise(new BioChanged($user));
 
             $user->save();
         }

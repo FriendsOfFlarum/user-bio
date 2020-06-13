@@ -15,18 +15,22 @@ app.initializers.add('fof-user-bio', () => {
                   .text(bio)
                   .html()
                   .replace(/\n/g, '<br>')
-                  .autoLink({ rel: 'nofollow' }) +
+                  .autoLink({ rel: 'nofollow ugc' }) +
               '</p>'
             : ''
     );
 
     extend(UserCard.prototype, 'infoItems', function(items) {
         let user = this.props.user;
+
+        if (!user.attribute('canViewBio')) {
+            return;
+        }
+
         items.add(
             'bio',
             UserBio.component({
                 user,
-                editable: this.props.editable,
             })
         );
     });

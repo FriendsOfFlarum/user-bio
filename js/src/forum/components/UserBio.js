@@ -26,13 +26,14 @@ export default class UserBio extends Component {
 
     view() {
         const user = this.props.user;
+        const editable = this.props.user.attribute('canEditBio');
         let content;
 
         if (this.editing) {
             content = (
                 <textarea
                     className="FormControl"
-                    placeholder={extractText(app.translator.trans('fof-userbio.forum.userbioPlaceholder'))}
+                    placeholder={extractText(app.translator.trans('fof-user-bio.forum.userbioPlaceholder'))}
                     rows="3"
                     value={user.bio()}
                 />
@@ -47,13 +48,13 @@ export default class UserBio extends Component {
 
                 if (bioHtml) {
                     subContent = m.trust(bioHtml);
-                } else if (this.props.editable) {
-                    subContent = <p className="UserBio-placeholder">{app.translator.trans('fof-userbio.forum.userbioPlaceholder')}</p>;
+                } else if (editable) {
+                    subContent = <p className="UserBio-placeholder">{app.translator.trans('fof-user-bio.forum.userbioPlaceholder')}</p>;
                 }
             }
 
             content = (
-                <div className="UserBio-content" onclick={this.edit.bind(this)}>
+                <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined}>
                     {subContent}
                 </div>
             );
@@ -64,7 +65,7 @@ export default class UserBio extends Component {
                 className={
                     'UserBio ' +
                     classList({
-                        editable: this.props.editable,
+                        editable,
                         editing: this.editing,
                     })
                 }
@@ -78,8 +79,6 @@ export default class UserBio extends Component {
      * Edit the bio.
      */
     edit() {
-        if (!this.props.editable) return;
-
         this.editing = true;
         m.redraw();
 
