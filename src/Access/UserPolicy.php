@@ -21,7 +21,6 @@ class UserPolicy extends AbstractPolicy
     public function viewBio(User $actor, User $user)
     {
         // We only let the user see its own bio if they are also allowed to edit it
-        //var_dump($actor->hasPermission('fof-user-bio.editOwn'));die();
         return ($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
             || $actor->hasPermission('fof-user-bio.view');
     }
