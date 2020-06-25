@@ -8,97 +8,113 @@ import extractText from 'flarum/utils/extractText';
  * edit it.
  */
 export default class UserBio extends Component {
-  init() {
-    /**
-     * Whether or not the bio is currently being edited.
-     *
-     * @type {Boolean}
-     */
-    this.editing = false;
+    init() {
+        /**
+         * Whether or not the bio is currently being edited.
+         *
+         * @type {Boolean}
+         */
+        this.editing = false;
 
-    /**
-     * Whether or not the bio is currently being saved.
-     *
-     * @type {Boolean}
-     */
-    this.loading = false;
-  }
+        /**
+         * Whether or not the bio is currently being saved.
+         *
+         * @type {Boolean}
+         */
+        this.loading = false;
+    }
 
-  view() {
-    const user = this.props.user;
-    let content;
+    view() {
+        const user = this.props.user;
+        const editable = this.props.user.attribute('canEditBio');
+        let content;
 
-    if (this.editing) {
-      content = <textarea className="FormControl" placeholder={extractText(app.translator.trans('fof-userbio.forum.userbioPlaceholder'))} rows="3" value={user.bio()}/>;
-    } else {
-      let subContent;
+        if (this.editing) {
+            content = (
+                <textarea
+                    className="FormControl"
+                    placeholder={extractText(app.translator.trans('fof-user-bio.forum.userbioPlaceholder'))}
+                    rows="3"
+                    value={user.bio()}
+                />
+            );
+        } else {
+            let subContent;
 
-      if (this.loading) {
-        subContent = <p className="UserBio-placeholder">{LoadingIndicator.component({size: 'tiny'})}</p>;
-      } else {
-        const bioHtml = user.bioHtml();
+            if (this.loading) {
+                subContent = <p className="UserBio-placeholder">{LoadingIndicator.component({ size: 'tiny' })}</p>;
+            } else {
+                const bioHtml = user.bioHtml();
 
-        if (bioHtml) {
-          subContent = m.trust(bioHtml);
-        } else if (this.props.editable) {
-          subContent = <p className="UserBio-placeholder">{app.translator.trans('fof-userbio.forum.userbioPlaceholder')}</p>;
+                if (bioHtml) {
+                    subContent = m.trust(bioHtml);
+                } else if (editable) {
+                    subContent = <p className="UserBio-placeholder">{app.translator.trans('fof-user-bio.forum.userbioPlaceholder')}</p>;
+                }
+            }
+
+            content = (
+                <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined}>
+                    {subContent}
+                </div>
+            );
         }
-      }
 
-      content = <div className="UserBio-content" onclick={this.edit.bind(this)}>{subContent}</div>;
+        return (
+            <div
+                className={
+                    'UserBio ' +
+                    classList({
+                        editable,
+                        editing: this.editing,
+                    })
+                }
+            >
+                {content}
+            </div>
+        );
     }
 
-    return (
-      <div className={'UserBio ' + classList({
-          editable: this.props.editable,
-          editing: this.editing
-        })}>
-        {content}
-      </div>
-    );
-  }
+    /**
+     * Edit the bio.
+     */
+    edit() {
+        this.editing = true;
+        m.redraw();
 
-  /**
-   * Edit the bio.
-   */
-  edit() {
-    if (!this.props.editable) return;
+        const bio = this;
+        const save = function(e) {
+            if (e.shiftKey) return;
+            e.preventDefault();
+            bio.save($(this).val());
+        };
 
-    this.editing = true;
-    m.redraw();
-
-    const bio = this;
-    const save = function(e) {
-      if (e.shiftKey) return;
-      e.preventDefault();
-      bio.save($(this).val());
-    };
-
-    this.$('textarea').focus()
-      .bind('blur', save)
-      .bind('keydown', 'return', save);
-  }
-
-  /**
-   * Save the bio.
-   *
-   * @param {String} value
-   */
-  save(value) {
-    const user = this.props.user;
-
-    if (user.bio() !== value) {
-      this.loading = true;
-
-      user.save({bio: value})
-        .catch(() => {})
-        .then(() => {
-          this.loading = false;
-          m.redraw();
-        });
+        this.$('textarea')
+            .focus()
+            .bind('blur', save)
+            .bind('keydown', 'return', save);
     }
 
-    this.editing = false;
-    m.redraw();
-  }
+    /**
+     * Save the bio.
+     *
+     * @param {String} value
+     */
+    save(value) {
+        const user = this.props.user;
+
+        if (user.bio() !== value) {
+            this.loading = true;
+
+            user.save({ bio: value })
+                .catch(() => {})
+                .then(() => {
+                    this.loading = false;
+                    m.redraw();
+                });
+        }
+
+        this.editing = false;
+        m.redraw();
+    }
 }

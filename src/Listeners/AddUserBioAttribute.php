@@ -30,8 +30,12 @@ class AddUserBioAttribute
      */
     public function serializing(Serializing $event)
     {
-        if ($event->isSerializer(UserSerializer::class)) {
-            $event->attributes['bio'] = $event->model->bio;
+        if ($event->isSerializer(UserSerializer::class) && $event->actor->can('viewBio', $event->model)) {
+            $event->attributes += [
+                'bio'        => $event->model->bio,
+                'canViewBio' => true,
+                'canEditBio' => $event->actor->can('editBio', $event->model),
+            ];
         }
     }
 }
