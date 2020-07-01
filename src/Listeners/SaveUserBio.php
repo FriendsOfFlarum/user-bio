@@ -45,7 +45,7 @@ class SaveUserBio
         if (isset($attributes['bio'])) {
             $this->assertCan($actor, 'editBio', $user);
 
-            $user->biography = $attributes['bio'];
+            $user->bio = $attributes['bio'];
 
             $user->raise(new BioChanged($user));
 
