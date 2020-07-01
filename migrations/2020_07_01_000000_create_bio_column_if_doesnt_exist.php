@@ -15,17 +15,15 @@ use Illuminate\Database\Schema\Builder;
 return [
     'up' => function (Builder $schema) {
         $schema->table('users', function (Blueprint $table) use ($schema) {
-            if ($schema->hasColumn('users', 'bio')) {
-                $table->renameColumn('bio', 'biography');
-            } else {
-                $table->text('biography')->nullable();
+            if (!$schema->hasColumn('users', 'bio')) {
+                $table->text('bio')->nullable();
             }
         });
     },
 
     'down' => function (Builder $schema) {
         $schema->table('users', function (Blueprint $table) {
-            $table->dropColumn('biography');
+            $table->dropColumn('bio');
         });
     }
 ];
