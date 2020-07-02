@@ -15,6 +15,8 @@ use Illuminate\Database\Schema\Builder;
 return [
     'up' => function (Builder $schema) {
         $schema->table('users', function (Blueprint $table) use ($schema) {
+            // Older forums will already have this column created by Flarum.
+            // New forums created with beta 14 onwards will not have this column
             if (!$schema->hasColumn('users', 'bio')) {
                 $table->text('bio')->nullable();
             }
