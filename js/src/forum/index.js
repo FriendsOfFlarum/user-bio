@@ -8,28 +8,17 @@ import UserBio from './components/UserBio';
 
 app.initializers.add('fof-user-bio', () => {
     User.prototype.bio = Model.attribute('bio');
-    User.prototype.bioHtml = computed('bio', bio =>
-        bio
-            ? '<p>' +
-              $('<div/>')
-                  .text(bio)
-                  .html()
-                  .replace(/\n/g, '<br>')
-                  .autoLink({ rel: 'nofollow ugc' }) +
-              '</p>'
-            : ''
+    User.prototype.bioHtml = computed('bio', (bio) =>
+        bio ? '<p>' + $('<div/>').text(bio).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc' }) + '</p>' : ''
     );
 
-    extend(UserCard.prototype, 'infoItems', function(items) {
+    extend(UserCard.prototype, 'infoItems', function (items) {
         let user = this.attrs.user;
 
         if (!user || !user.attribute('canViewBio')) {
             return;
         }
 
-        items.add(
-            'bio',
-            <UserBio user={user} />
-        );
+        items.add('bio', <UserBio user={user} />);
     });
 });

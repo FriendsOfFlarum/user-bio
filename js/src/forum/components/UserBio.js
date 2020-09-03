@@ -45,9 +45,11 @@ export default class UserBio extends Component {
             let subContent;
 
             if (this.loading) {
-                subContent = <p className="UserBio-placeholder">
-                    <LoadingIndicator size="tiny"/>
-                </p>;
+                subContent = (
+                    <p className="UserBio-placeholder">
+                        <LoadingIndicator size="tiny" />
+                    </p>
+                );
             } else {
                 const bioHtml = user.bioHtml();
 
@@ -61,7 +63,7 @@ export default class UserBio extends Component {
             const canEdit = editable && !this.loading;
 
             content = (
-                <div className="UserBio-content" onclick={canEdit && (() => this.editing = true)}>
+                <div className="UserBio-content" onclick={canEdit && (() => (this.editing = true))}>
                     {subContent}
                 </div>
             );
@@ -91,10 +93,7 @@ export default class UserBio extends Component {
             this.save(vnode.dom.value);
         };
 
-        $(vnode.dom)
-            .focus()
-            .bind('blur', save)
-            .bind('keydown', 'return', save)
+        $(vnode.dom).focus().bind('blur', save).bind('keydown', 'return', save);
     }
     /**
      * Save the bio.
