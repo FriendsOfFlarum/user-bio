@@ -8,7 +8,9 @@ import extractText from 'flarum/utils/extractText';
  * edit it.
  */
 export default class UserBio extends Component {
-    init() {
+    oninit(vnode) {
+        super.oninit(vnode);
+
         /**
          * Whether or not the bio is currently being edited.
          *
@@ -25,8 +27,8 @@ export default class UserBio extends Component {
     }
 
     view() {
-        const user = this.props.user;
-        const editable = this.props.user.attribute('canEditBio');
+        const user = this.attrs.user;
+        const editable = user.attribute('canEditBio');
         let content;
 
         if (this.editing) {
@@ -35,6 +37,7 @@ export default class UserBio extends Component {
                     className="FormControl"
                     placeholder={extractText(app.translator.trans('fof-user-bio.forum.userbioPlaceholder'))}
                     rows="3"
+                    oncreate={this.setupTextarea.bind(this)}
                     value={user.bio()}
                 />
             );
@@ -42,7 +45,9 @@ export default class UserBio extends Component {
             let subContent;
 
             if (this.loading) {
-                subContent = <p className="UserBio-placeholder">{LoadingIndicator.component({ size: 'tiny' })}</p>;
+                subContent = <p className="UserBio-placeholder">
+                    <LoadingIndicator size="tiny"/>
+                </p>;
             } else {
                 const bioHtml = user.bioHtml();
 
@@ -53,8 +58,10 @@ export default class UserBio extends Component {
                 }
             }
 
+            const canEdit = editable && !this.loading;
+
             content = (
-                <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined}>
+                <div className="UserBio-content" onclick={canEdit && (() => this.editing = true)}>
                     {subContent}
                 </div>
             );
@@ -67,6 +74,7 @@ export default class UserBio extends Component {
                     classList({
                         editable,
                         editing: this.editing,
+                        loading: this.loading,
                     })
                 }
             >
@@ -75,33 +83,26 @@ export default class UserBio extends Component {
         );
     }
 
-    /**
-     * Edit the bio.
-     */
-    edit() {
-        this.editing = true;
-        m.redraw();
-
-        const bio = this;
-        const save = function(e) {
+    setupTextarea(vnode) {
+        const save = (e) => {
             if (e.shiftKey) return;
             e.preventDefault();
-            bio.save($(this).val());
+
+            this.save(vnode.dom.value);
         };
 
-        this.$('textarea')
+        $(vnode.dom)
             .focus()
             .bind('blur', save)
-            .bind('keydown', 'return', save);
+            .bind('keydown', 'return', save)
     }
-
     /**
      * Save the bio.
      *
      * @param {String} value
      */
     save(value) {
-        const user = this.props.user;
+        const user = this.attrs.user;
 
         if (user.bio() !== value) {
             this.loading = true;

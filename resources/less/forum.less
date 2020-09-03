@@ -10,7 +10,11 @@
     border: 1px dashed transparent;
     border-radius: @border-radius;
 
-    &.editable:not(.editing) {
+    &.loading {
+        cursor: progress;
+    }
+
+    &.editable:not(.editing):not(.loading) {
         cursor: text;
 
         &:hover {
@@ -26,6 +30,7 @@
         padding: 10px;
         font-size: 14px;
         resize: none;
+        min-height: 0;
     }
 }
 
