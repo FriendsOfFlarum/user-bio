@@ -21,7 +21,7 @@ app.initializers.add('fof-user-bio', () => {
     );
 
     extend(UserCard.prototype, 'infoItems', function(items) {
-        let user = this.props.user;
+        let user = this.attrs.user;
 
         if (!user.attribute('canViewBio')) {
             return;

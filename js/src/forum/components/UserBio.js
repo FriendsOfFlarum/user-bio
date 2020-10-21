@@ -25,8 +25,8 @@ export default class UserBio extends Component {
     }
 
     view() {
-        const user = this.props.user;
-        const editable = this.props.user.attribute('canEditBio');
+        const user = this.attrs.user;
+        const editable = this.attrs.user.attribute('canEditBio');
         let content;
 
         if (this.editing) {
@@ -80,7 +80,7 @@ export default class UserBio extends Component {
      */
     edit() {
         this.editing = true;
-        m.redraw();
+        m.redraw.sync();
 
         const bio = this;
         const save = function(e) {
@@ -101,7 +101,7 @@ export default class UserBio extends Component {
      * @param {String} value
      */
     save(value) {
-        const user = this.props.user;
+        const user = this.attrs.user;
 
         if (user.bio() !== value) {
             this.loading = true;
@@ -110,11 +110,11 @@ export default class UserBio extends Component {
                 .catch(() => {})
                 .then(() => {
                     this.loading = false;
-                    m.redraw();
+                    m.redraw.sync();
                 });
         }
 
         this.editing = false;
-        m.redraw();
+        m.redraw.sync();
     }
 }
