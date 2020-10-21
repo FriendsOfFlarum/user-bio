@@ -11,7 +11,6 @@
 
 namespace FoF\UserBio\Listeners;
 
-use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -19,8 +18,6 @@ use Illuminate\Support\Arr;
 
 class SaveUserBio
 {
-    use AssertPermissionTrait;
-
     /**
      * @param Dispatcher $events
      */
@@ -43,7 +40,7 @@ class SaveUserBio
         $attributes = Arr::get($data, 'attributes', []);
 
         if (isset($attributes['bio'])) {
-            $this->assertCan($actor, 'editBio', $user);
+            $actor->assertCan($actor, 'editBio', $user);
 
             $user->bio = $attributes['bio'];
 
