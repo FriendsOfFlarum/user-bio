@@ -40,7 +40,7 @@ class SaveUserBio
         $attributes = Arr::get($data, 'attributes', []);
 
         if (isset($attributes['bio'])) {
-            $actor->assertCan($actor, 'editBio', $user);
+            $actor->assertCan('editBio', $user);
 
             $user->bio = $attributes['bio'];
 
