@@ -13,25 +13,16 @@ namespace FoF\UserBio\Listeners;
 
 use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
 
 class SaveUserBio
 {
     /**
-     * @param Dispatcher $events
-     */
-    public function subscribe(Dispatcher $events)
-    {
-        $events->listen(Saving::class, [$this, 'saving']);
-    }
-
-    /**
      * @param Saving $event
      *
      * @throws \Flarum\User\Exception\PermissionDeniedException
      */
-    public function saving(Saving $event)
+    public function handle(Saving $event)
     {
         $user = $event->user;
         $data = $event->data;
