@@ -23,7 +23,7 @@ class UserPolicy extends AbstractPolicy
             || $actor->hasPermission('fof-user-bio.view')
         ) {
             return $this->allow();
-        };
+        }
 
         return $this->deny();
     }
@@ -32,8 +32,8 @@ class UserPolicy extends AbstractPolicy
     {
         if (($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
             || $actor->hasPermission('fof-user-bio.editAny')) {
-                return $this->allow();
-            };
+            return $this->allow();
+        }
 
         return $this->deny();
     }

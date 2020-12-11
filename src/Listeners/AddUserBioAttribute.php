@@ -19,7 +19,7 @@ class AddUserBioAttribute
     public function __invoke(UserSerializer $serializer, User $user, array $attributes): array
     {
         $actor = $serializer->getActor();
-        
+
         if ($actor->can('viewBio', $user)) {
             $attributes += [
                 'bio'        => $user->bio,
