@@ -8,7 +8,8 @@ import extractText from 'flarum/utils/extractText';
  * edit it.
  */
 export default class UserBio extends Component {
-    init() {
+    oninit(vnode) {
+        super.oninit(vnode);
         /**
          * Whether or not the bio is currently being edited.
          *
@@ -80,7 +81,7 @@ export default class UserBio extends Component {
      */
     edit() {
         this.editing = true;
-        m.redraw.sync();
+        m.redraw();
 
         const bio = this;
         const save = function(e) {
@@ -110,11 +111,11 @@ export default class UserBio extends Component {
                 .catch(() => {})
                 .then(() => {
                     this.loading = false;
-                    m.redraw.sync();
+                    m.redraw();
                 });
         }
 
         this.editing = false;
-        m.redraw.sync();
+        m.redraw();
     }
 }

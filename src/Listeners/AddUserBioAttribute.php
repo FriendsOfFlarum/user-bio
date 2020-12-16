@@ -11,31 +11,23 @@
 
 namespace FoF\UserBio\Listeners;
 
-use Flarum\Api\Event\Serializing;
 use Flarum\Api\Serializer\UserSerializer;
-use Illuminate\Contracts\Events\Dispatcher;
+use Flarum\User\User;
 
 class AddUserBioAttribute
 {
-    /**
-     * @param Dispatcher $events
-     */
-    public function subscribe(Dispatcher $events)
+    public function __invoke(UserSerializer $serializer, User $user, array $attributes): array
     {
-        $events->listen(Serializing::class, [$this, 'serializing']);
-    }
+        $actor = $serializer->getActor();
 
-    /**
-     * @param Serializing $event
-     */
-    public function serializing(Serializing $event)
-    {
-        if ($event->isSerializer(UserSerializer::class) && $event->actor->can('viewBio', $event->model)) {
-            $event->attributes += [
-                'bio'        => $event->model->bio,
+        if ($actor->can('viewBio', $user)) {
+            $attributes += [
+                'bio'        => $user->bio,
                 'canViewBio' => true,
-                'canEditBio' => $event->actor->can('editBio', $event->model),
+                'canEditBio' => $actor->can('editBio', $user),
             ];
         }
+
+        return $attributes;
     }
 }

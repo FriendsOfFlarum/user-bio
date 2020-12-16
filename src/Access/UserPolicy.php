@@ -11,23 +11,30 @@
 
 namespace FoF\UserBio\Access;
 
-use Flarum\User\AbstractPolicy;
+use Flarum\User\Access\AbstractPolicy;
 use Flarum\User\User;
 
 class UserPolicy extends AbstractPolicy
 {
-    protected $model = User::class;
-
     public function viewBio(User $actor, User $user)
     {
         // We only let the user see its own bio if they are also allowed to edit it
-        return ($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
-            || $actor->hasPermission('fof-user-bio.view');
+        if (($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
+            || $actor->hasPermission('fof-user-bio.view')
+        ) {
+            return $this->allow();
+        }
+
+        return $this->deny();
     }
 
     public function editBio(User $actor, User $user)
     {
-        return ($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
-            || $actor->hasPermission('fof-user-bio.editAny');
+        if (($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
+            || $actor->hasPermission('fof-user-bio.editAny')) {
+            return $this->allow();
+        }
+
+        return $this->deny();
     }
 }
