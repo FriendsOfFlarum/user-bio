@@ -1,6 +1,6 @@
 {
     "name": "fof/user-bio",
-    "description": "Add the user bio back into Flarum",
+    "description": "Add a user bio to user profiles",
     "keywords": [
         "flarum",
         "Friends of Flarum"

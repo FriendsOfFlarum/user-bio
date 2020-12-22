@@ -81,7 +81,7 @@ export default class UserBio extends Component {
      */
     edit() {
         this.editing = true;
-        m.redraw();
+        m.redraw.sync();
 
         const bio = this;
         const save = function(e) {
@@ -94,6 +94,7 @@ export default class UserBio extends Component {
             .focus()
             .bind('blur', save)
             .bind('keydown', 'return', save);
+        m.redraw();
     }
 
     /**
