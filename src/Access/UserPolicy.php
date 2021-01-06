@@ -38,7 +38,7 @@ class UserPolicy extends AbstractPolicy
     {
         if (($actor->id === $user->id
                 && $actor->hasPermission('fof-user-bio.editOwn')
-                && ! $this->isSuspended($user))
+                && !$this->isSuspended($user))
             || $actor->hasPermission('fof-user-bio.editAny')) {
             return $this->allow();
         }
