@@ -3,7 +3,7 @@
 /*
  * This file is part of fof/user-bio.
  *
- * Copyright (c) 2019 FriendsOfFlarum.
+ * Copyright (c) 2019 - 2021 FriendsOfFlarum.
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
@@ -11,12 +11,24 @@
 
 namespace FoF\UserBio\Listeners;
 
+use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class SaveUserBio
 {
+    /**
+     * @var SettingsRepositoryInterface
+     */
+    protected $settings;
+
+    public function __construct(SettingsRepositoryInterface $settings)
+    {
+        $this->settings = $settings;
+    }
+
     /**
      * @param Saving $event
      *
@@ -33,7 +45,7 @@ class SaveUserBio
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
 
-            $user->bio = $attributes['bio'];
+            $user->bio = Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength'), '');
 
             $user->raise(new BioChanged($user));
 

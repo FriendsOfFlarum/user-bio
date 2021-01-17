@@ -1,3 +1,4 @@
+import app from 'flarum/app';
 import Component from 'flarum/Component';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
 import classList from 'flarum/utils/classList';
@@ -23,6 +24,11 @@ export default class UserBio extends Component {
          * @type {Boolean}
          */
         this.loading = false;
+
+        /**
+         * The max configured character count the bio may be
+         */
+        this.bioMaxLength = app.forum.attribute('fof-user-bio.maxLength');
     }
 
     view() {
@@ -36,6 +42,7 @@ export default class UserBio extends Component {
                     className="FormControl"
                     placeholder={extractText(app.translator.trans('fof-user-bio.forum.userbioPlaceholder'))}
                     rows="3"
+                    maxlength={this.bioMaxLength}
                     value={user.bio()}
                 />
             );
