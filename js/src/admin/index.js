@@ -14,7 +14,7 @@ app.initializers.add('fof-user-bio', () => {
         )
         .registerPermission(
             {
-                icon: 'fas pa-pen',
+                icon: 'fas fa-pen',
                 label: app.translator.trans('fof-user-bio.admin.permission.editOwn'),
                 permission: 'fof-user-bio.editOwn',
             },
