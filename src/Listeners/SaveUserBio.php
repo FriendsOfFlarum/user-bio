@@ -3,7 +3,7 @@
 /*
  * This file is part of fof/user-bio.
  *
- * Copyright (c) 2019 FriendsOfFlarum.
+ * Copyright (c) 2019 - 2021 FriendsOfFlarum.
  *
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
@@ -23,12 +23,12 @@ class SaveUserBio
      * @var SettingsRepositoryInterface
      */
     protected $settings;
-    
+
     public function __construct(SettingsRepositoryInterface $settings)
     {
         $this->settings = $settings;
     }
-    
+
     /**
      * @param Saving $event
      *
