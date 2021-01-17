@@ -45,7 +45,7 @@ class SaveUserBio
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
 
-            $user->bio = Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength', 200), '');
+            $user->bio = Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength'), '');
 
             $user->raise(new BioChanged($user));
 

@@ -39,10 +39,6 @@ return [
 
     (new Extend\Settings())
         ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', function ($value) {
-            if (null === $value) {
-                return 200;
-            }
-
             return (int) $value;
         }),
 ];

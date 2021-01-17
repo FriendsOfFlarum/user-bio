@@ -41,7 +41,7 @@ class AddUserBioAttribute
 
         if ($actor->can('viewBio', $user)) {
             $attributes += [
-                'bio'        => Str::limit($user->bio, $this->settings->get('fof-user-bio.maxLength', 200), ''),
+                'bio'        => Str::limit($user->bio, $this->settings->get('fof-user-bio.maxLength'), ''),
                 'canViewBio' => true,
                 'canEditBio' => $actor->can('editBio', $user),
             ];
