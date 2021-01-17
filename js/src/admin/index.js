@@ -27,5 +27,12 @@ app.initializers.add('fof-user-bio', () => {
                 permission: 'fof-user-bio.editAny',
             },
             'moderate'
+        )
+        .registerSetting(
+            {
+                label: app.translator.trans('fof-user-bio.admin.setting.bioLimit'),
+                setting: 'fof-user-bio.maxLength',
+                type: 'number'
+            }
         );
 });

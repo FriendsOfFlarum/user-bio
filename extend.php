@@ -36,4 +36,10 @@ return [
 
     (new Extend\Policy())
         ->modelPolicy(User::class, Access\UserPolicy::class),
+
+    (new Extend\Settings())
+        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', function ($value) {
+            if (null === $value) { return 200; }
+            return (int) $value;
+        }),
 ];
