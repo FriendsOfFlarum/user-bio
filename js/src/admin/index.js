@@ -28,11 +28,9 @@ app.initializers.add('fof-user-bio', () => {
             },
             'moderate'
         )
-        .registerSetting(
-            {
-                label: app.translator.trans('fof-user-bio.admin.setting.bioLimit'),
-                setting: 'fof-user-bio.maxLength',
-                type: 'number'
-            }
-        );
+        .registerSetting({
+            label: app.translator.trans('fof-user-bio.admin.setting.bioLimit'),
+            setting: 'fof-user-bio.maxLength',
+            type: 'number',
+        });
 });
