@@ -29,6 +29,18 @@ export default class UserBio extends Component {
          * The max configured character count the bio may be
          */
         this.bioMaxLength = app.forum.attribute('fof-user-bio.maxLength');
+
+        /**
+         * The placeholder shown in the bio textbox when no input is set.
+         */
+        this.bioPlaceholder =
+            app.session && app.session.user && app.session.user.id() === this.attrs.user.id()
+                ? // Normal placeholder if they're looking at their own profile
+                  app.translator.trans('fof-user-bio.forum.userbioPlaceholder')
+                : // Special placeholder if someone else is viewing their profile with edit access
+                  app.translator.trans('fof-user-bio.forum.userbioPlaceholderOtherUser', {
+                      username: this.attrs.user.username(),
+                  });
     }
 
     view() {
@@ -40,7 +52,7 @@ export default class UserBio extends Component {
             content = (
                 <textarea
                     className="FormControl"
-                    placeholder={extractText(app.translator.trans('fof-user-bio.forum.userbioPlaceholder'))}
+                    placeholder={extractText(this.bioPlaceholder)}
                     rows="3"
                     maxlength={this.bioMaxLength}
                     value={user.bio()}
@@ -57,7 +69,7 @@ export default class UserBio extends Component {
                 if (bioHtml) {
                     subContent = m.trust(bioHtml);
                 } else if (editable) {
-                    subContent = <p className="UserBio-placeholder">{app.translator.trans('fof-user-bio.forum.userbioPlaceholder')}</p>;
+                    subContent = <p className="UserBio-placeholder">{this.bioPlaceholder}</p>;
                 }
             }
 
