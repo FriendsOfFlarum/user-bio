@@ -32,13 +32,11 @@ return [
         ->listen(Saving::class, SaveUserBio::class),
 
     (new Extend\ApiSerializer(UserSerializer::class))
-        ->mutate(AddUserBioAttribute::class),
+        ->attributes(AddUserBioAttribute::class),
 
     (new Extend\Policy())
         ->modelPolicy(User::class, Access\UserPolicy::class),
 
     (new Extend\Settings())
-        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', function ($value) {
-            return (int) $value;
-        }),
+        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal'),
 ];

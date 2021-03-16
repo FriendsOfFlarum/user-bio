@@ -16,7 +16,7 @@ return [
         /**
          * @var \Flarum\Settings\SettingsRepositoryInterface
          */
-        $settings = app('flarum.settings');
+        $settings = resolve('flarum.settings');
 
         $settings->set('fof-user-bio.maxLength', 200);
     },
@@ -24,7 +24,7 @@ return [
         /**
          * @var \Flarum\Settings\SettingsRepositoryInterface
          */
-        $settings = app('flarum.settings');
+        $settings = resolve('flarum.settings');
 
         $settings->delete('fof-user-bio.maxLength');
     },

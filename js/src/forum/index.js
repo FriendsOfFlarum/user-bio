@@ -1,9 +1,9 @@
-import { extend } from 'flarum/extend';
+import { extend } from 'flarum/common/extend';
 import 'autolink-js';
-import computed from 'flarum/utils/computed';
-import UserCard from 'flarum/components/UserCard';
-import User from 'flarum/models/User';
-import Model from 'flarum/Model';
+import computed from 'flarum/common/utils/computed';
+import UserCard from 'flarum/common/components/UserCard';
+import User from 'flarum/common/models/User';
+import Model from 'flarum/common/Model';
 import UserBio from './components/UserBio';
 
 app.initializers.add('fof-user-bio', () => {

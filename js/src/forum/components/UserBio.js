@@ -1,8 +1,8 @@
-import app from 'flarum/app';
-import Component from 'flarum/Component';
-import LoadingIndicator from 'flarum/components/LoadingIndicator';
-import classList from 'flarum/utils/classList';
-import extractText from 'flarum/utils/extractText';
+import app from 'flarum/common/app';
+import Component from 'flarum/common/Component';
+import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
+import classList from 'flarum/common/utils/classList';
+import extractText from 'flarum/common/utils/extractText';
 
 /**
  * The `UserBio` component displays a user's bio, optionally letting the user
