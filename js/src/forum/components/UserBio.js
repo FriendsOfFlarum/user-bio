@@ -103,16 +103,13 @@ export default class UserBio extends Component {
         m.redraw.sync();
 
         const bio = this;
-        const save = function(e) {
+        const save = function (e) {
             if (e.shiftKey) return;
             e.preventDefault();
             bio.save($(this).val());
         };
 
-        this.$('textarea')
-            .focus()
-            .bind('blur', save)
-            .bind('keydown', 'return', save);
+        this.$('textarea').focus().bind('blur', save).bind('keydown', 'return', save);
         m.redraw();
     }
 
