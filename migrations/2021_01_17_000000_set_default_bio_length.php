@@ -13,14 +13,10 @@ use Illuminate\Database\Schema\Builder;
 
 return [
     'up' => function (Builder $schema) {
-        /**
-         * @var \Flarum\Settings\SettingsRepositoryInterface
-         */
-        $settings = resolve('flarum.settings');
-
-        $settings->set('fof-user-bio.maxLength', 200);
+        // nothing required here.
     },
     'down' => function (Builder $schema) {
+        // remove the settings, if any were saved.
         /**
          * @var \Flarum\Settings\SettingsRepositoryInterface
          */
