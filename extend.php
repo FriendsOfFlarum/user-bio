@@ -38,5 +38,6 @@ return [
         ->modelPolicy(User::class, Access\UserPolicy::class),
 
     (new Extend\Settings())
-        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal'),
+        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal')
+        ->default('fof-user-bio.maxLength', 200),
 ];

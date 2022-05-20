@@ -22,6 +22,6 @@ app.initializers.add('fof-user-bio', () => {
       return;
     }
 
-    items.add('bio', <UserBio user={user} />);
+    items.add('bio', <UserBio user={user} />, -100);
   });
 });

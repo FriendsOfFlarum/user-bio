@@ -20,13 +20,18 @@
         }
       ],
     "require": {
-        "flarum/core": "^1.0.0"
+        "flarum/core": "^1.2.0"
     },
     "authors": [
         {
             "name": "Charlie K",
             "email": "charlie.k@redevs.org",
             "homepage": "https://redevs.org",
+            "role": "Developer"
+        },
+        {
+            "name": "IanM",
+            "email": "ian@blomstra.net",
             "role": "Developer"
         }
     ],
