@@ -32,5 +32,6 @@ app.initializers.add('fof-user-bio', () => {
       label: app.translator.trans('fof-user-bio.admin.setting.bioLimit'),
       setting: 'fof-user-bio.maxLength',
       type: 'number',
+      placeholder: 200
     });
 });
