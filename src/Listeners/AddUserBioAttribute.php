@@ -15,7 +15,6 @@ use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Formatter\Formatter;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use Illuminate\Support\Str;
 
 class AddUserBioAttribute
 {
