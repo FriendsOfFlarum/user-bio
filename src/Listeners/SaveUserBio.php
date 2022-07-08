@@ -11,6 +11,7 @@
 
 namespace FoF\UserBio\Listeners;
 
+use Flarum\Formatter\Formatter;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
@@ -24,9 +25,15 @@ class SaveUserBio
      */
     protected $settings;
 
-    public function __construct(SettingsRepositoryInterface $settings)
+    /**
+     * @var Formatter
+     */
+    protected $formatter;
+
+    public function __construct(SettingsRepositoryInterface $settings, Formatter $formatter)
     {
         $this->settings = $settings;
+        $this->formatter = $formatter;
     }
 
     /**
@@ -45,7 +52,7 @@ class SaveUserBio
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
 
-            $user->bio = Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength'), '');
+            $user->bio = $this->formatter->parse(Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength'), ''));
 
             $user->raise(new BioChanged($user));
 

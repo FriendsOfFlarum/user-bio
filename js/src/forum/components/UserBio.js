@@ -56,12 +56,18 @@ export default class UserBio extends Component {
       let subContent;
 
       if (this.loading) {
-        subContent = <p className="UserBio-placeholder">{LoadingIndicator.component({ size: 'tiny' })}</p>;
+        subContent = (
+          <p className="UserBio-placeholder">
+            <LoadingIndicator />
+          </p>
+        );
       } else {
         const bioHtml = user.bioHtml();
 
         if (bioHtml) {
           subContent = m.trust(bioHtml);
+        } else if (user.bio()) {
+          subContent = m.trust('<p>' + $('<div/>').text(user.bio()).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc' }) + '</p>');
         } else if (editable) {
           subContent = <p className="UserBio-placeholder">{this.bioPlaceholder}</p>;
         }
