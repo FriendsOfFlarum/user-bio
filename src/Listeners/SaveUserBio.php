@@ -17,7 +17,6 @@ use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
 use FoF\UserBio\Validators\UserBioValidator;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class SaveUserBio
 {
