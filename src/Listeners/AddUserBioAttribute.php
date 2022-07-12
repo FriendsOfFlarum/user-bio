@@ -46,7 +46,7 @@ class AddUserBioAttribute
         $actor = $serializer->getActor();
 
         $bio = $user->bio ?? '';
-        $isXML = str_starts_with($bio, '<');
+        $isXML = Str::startsWith($bio, '<');
 
         $canViewBio = $actor->can('viewBio', $user);
         $canEditBio = $actor->can('editBio', $user);
