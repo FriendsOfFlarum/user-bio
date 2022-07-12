@@ -48,22 +48,25 @@ class AddUserBioAttribute
         $bio = $user->bio ?? '';
         $isXML = str_starts_with($bio, '<');
 
-        if ($actor->can('viewBio', $user)) {
+        $canViewBio = $actor->can('viewBio', $user);
+        $canEditBio = $actor->can('editBio', $user);
+
+        if ($canViewBio) {
             if ($isXML) {
                 $attributes['bioHtml'] = $this->formatter->render($bio);
 
-                if ($actor->id === $user->id) {
+                if ($canEditBio) {
                     $attributes['bio'] = $this->formatter->unparse($bio);
                 }
             } else {
                 $attributes['bio'] = $bio;
             }
-
-            $attributes += [
-                'canViewBio' => true,
-                'canEditBio' => $actor->can('editBio', $user),
-            ];
         }
+
+        $attributes += [
+            'canViewBio' => $canViewBio,
+            'canEditBio' => $canEditBio,
+        ];
 
         return $attributes;
     }
