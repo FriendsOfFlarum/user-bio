@@ -15,6 +15,7 @@ use Flarum\Formatter\Formatter;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Event\Saving;
 use FoF\UserBio\Event\BioChanged;
+use FoF\UserBio\Validators\UserBioValidator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -30,10 +31,16 @@ class SaveUserBio
      */
     protected $formatter;
 
-    public function __construct(SettingsRepositoryInterface $settings, Formatter $formatter)
+    /**
+     * @var UserBioValidator
+     */
+    protected $validator;
+
+    public function __construct(SettingsRepositoryInterface $settings, Formatter $formatter, UserBioValidator $validator)
     {
         $this->settings = $settings;
         $this->formatter = $formatter;
+        $this->validator = $validator;
     }
 
     /**
@@ -52,7 +59,9 @@ class SaveUserBio
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
 
-            $user->bio = $this->formatter->parse(Str::limit($attributes['bio'], $this->settings->get('fof-user-bio.maxLength'), ''));
+            $this->validator->assertValid(Arr::only($attributes, 'bio'));
+
+            $user->bio = $this->formatter->parse($attributes['bio']);
 
             $user->raise(new BioChanged($user));
 
