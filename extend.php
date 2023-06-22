@@ -40,4 +40,7 @@ return [
     (new Extend\Settings())
         ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal')
         ->default('fof-user-bio.maxLength', 200),
+
+    (new Extend\ServiceProvider())
+        ->register(Formatter\FormatterServiceProvider::class),
 ];

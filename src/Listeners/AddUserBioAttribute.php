@@ -14,7 +14,7 @@ namespace FoF\UserBio\Listeners;
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use Illuminate\Support\Str;
+use FoF\UserBio\Formatter\UserBioFormatter;
 
 class AddUserBioAttribute
 {
@@ -23,9 +23,15 @@ class AddUserBioAttribute
      */
     protected $settings;
 
-    public function __construct(SettingsRepositoryInterface $settings)
+    /**
+     * @var UserBioFormatter
+     */
+    protected $formatter;
+
+    public function __construct(SettingsRepositoryInterface $settings, UserBioFormatter $formatter)
     {
         $this->settings = $settings;
+        $this->formatter = $formatter;
     }
 
     /**
@@ -39,9 +45,21 @@ class AddUserBioAttribute
     {
         $actor = $serializer->getActor();
 
+        $bio = $user->bio ?? '';
+        $isXML = str_starts_with($bio, '<');
+
         if ($actor->can('viewBio', $user)) {
+            if ($isXML) {
+                $attributes['bioHtml'] = $this->formatter->render($bio);
+
+                if ($actor->id === $user->id) {
+                    $attributes['bio'] = $this->formatter->unparse($bio);
+                }
+            } else {
+                $attributes['bio'] = $bio;
+            }
+
             $attributes += [
-                'bio'        => $user->bio ? Str::limit($user->bio, $this->settings->get('fof-user-bio.maxLength'), '') : null,
                 'canViewBio' => true,
                 'canEditBio' => $actor->can('editBio', $user),
             ];
