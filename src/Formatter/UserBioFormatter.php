@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of fof/user-bio.
+ *
+ * Copyright (c) FriendsOfFlarum.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FoF\UserBio\Formatter;
 
 use Flarum\Extension\ExtensionManager;
@@ -52,7 +61,7 @@ class UserBioFormatter extends Formatter
         }
 
         if ($this->extensions->isEnabled('flarum-bbcode')) {
-            (new \Flarum\BBCode\Configure)($configurator);
+            (new \Flarum\BBCode\Configure())($configurator);
         }
 
         return $configurator;
