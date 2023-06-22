@@ -68,6 +68,8 @@ class SaveUserBio
             if ($user->bio != $user->getOriginal('bio')) {
                 $user->raise(new BioChanged($user));
             }
+
+            $user->save();
         }
     }
 }
