@@ -65,7 +65,9 @@ class SaveUserBio
                 Str::of($attributes['bio'])->trim()
             );
 
-            $user->raise(new BioChanged($user));
+            if ($user->bio != $user->getOriginal('bio')) {
+                $user->raise(new BioChanged($user));
+            }
         }
     }
 }
