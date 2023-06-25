@@ -12,32 +12,41 @@
 namespace FoF\UserBio;
 
 use Flarum\Api\Serializer\UserSerializer;
-use Flarum\Extend;
+use Flarum\Extend as Flarum;
+use Flarum\Settings\Event\Saved;
 use Flarum\User\Event\Saving;
 use Flarum\User\User;
-use FoF\UserBio\Listeners\AddUserBioAttribute;
-use FoF\UserBio\Listeners\SaveUserBio;
+use s9e\TextFormatter\Configurator;
 
 return [
-    (new Extend\Frontend('forum'))
+    (new Flarum\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
         ->css(__DIR__.'/resources/less/forum.less'),
 
-    (new Extend\Frontend('admin'))
+    (new Flarum\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js'),
 
-    new Extend\Locales(__DIR__.'/resources/locale'),
+    new Flarum\Locales(__DIR__.'/resources/locale'),
 
-    (new Extend\Event())
-        ->listen(Saving::class, SaveUserBio::class),
+    (new Flarum\Event())
+        ->listen(Saving::class, Listeners\SaveUserBio::class)
+        ->listen(Saved::class, Listeners\ClearFormatterCache::class),
 
-    (new Extend\ApiSerializer(UserSerializer::class))
-        ->attributes(AddUserBioAttribute::class),
+    (new Flarum\ApiSerializer(UserSerializer::class))
+        ->attributes(Listeners\AddUserBioAttribute::class),
 
-    (new Extend\Policy())
+    (new Flarum\Policy())
         ->modelPolicy(User::class, Access\UserPolicy::class),
 
-    (new Extend\Settings())
+    (new Flarum\Settings())
         ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal')
         ->default('fof-user-bio.maxLength', 200),
+
+    (new Flarum\ServiceProvider())
+        ->register(Formatter\FormatterServiceProvider::class),
+
+    (new Extend\Formatter())
+        ->configure(function (Configurator $configurator) {
+            $configurator->Censor->add('test');
+        }),
 ];

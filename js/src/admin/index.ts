@@ -33,5 +33,11 @@ app.initializers.add('fof-user-bio', () => {
       setting: 'fof-user-bio.maxLength',
       type: 'number',
       placeholder: 200,
+    })
+    .registerSetting({
+      label: app.translator.trans('fof-user-bio.admin.setting.allowFormatting'),
+      help: app.translator.trans('fof-user-bio.admin.setting.allowFormatting_help'),
+      setting: 'fof-user-bio.allowFormatting',
+      type: 'boolean',
     });
 });
