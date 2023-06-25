@@ -7,7 +7,7 @@ fof-user-bio:
         setting:
             bioLimit: Bio character limit
             allowFormatting: Allow formatting in bio
-            allowFormatting_help: Not all formatting is supported by default *on purpose*. If enabled, BBCode and Markdown will be supported; excluding images and links.
+            allowFormatting_help: By design, this formatting is separate from post formatting. If the BBCode and/or Markdown extensions are enabled, they will be available to format the bio. No images or embeds are allowed. Extensions that add to the Flarum formatter must *explicitly* add support for the bio formatter.
 
     forum:
         userbioPlaceholder: Write something about yourself
