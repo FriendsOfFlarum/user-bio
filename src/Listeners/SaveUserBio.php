@@ -55,15 +55,18 @@ class SaveUserBio
         $actor = $event->actor;
 
         $attributes = Arr::get($data, 'attributes', []);
+        $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
 
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
 
             $this->validator->assertValid(Arr::only($attributes, 'bio'));
 
-            $user->bio = $this->formatter->parse(
-                Str::of($attributes['bio'])->trim()
-            );
+            $user->bio = Str::of($attributes['bio'])->trim();
+
+            if ($allowFormatting) {
+                $user->bio = $this->formatter->parse($user->bio);
+            }
 
             if ($user->bio != $user->getOriginal('bio')) {
                 $user->raise(new BioChanged($user));

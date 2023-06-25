@@ -22,13 +22,18 @@ class FormatterServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $this->container->singleton('fof-user-bio.formatter', function (Container $container) {
-            return new UserBioFormatter(
-                new Repository($container->make('cache.filestore')),
-                $container[Paths::class]->storage.'/formatter',
-                $container->make(ExtensionManager::class)
-            );
+            return self::createFormatterInstance($container);
         });
 
         $this->container->alias('fof-user-bio.formatter', UserBioFormatter::class);
+    }
+
+    public static function createFormatterInstance(Container $container): UserBioFormatter
+    {
+        return new UserBioFormatter(
+            new Repository($container->make('cache.filestore')),
+            $container[Paths::class]->storage.'/formatter',
+            $container->make(ExtensionManager::class)
+        );
     }
 }

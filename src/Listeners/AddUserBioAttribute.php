@@ -47,12 +47,14 @@ class AddUserBioAttribute
 
         $bio = $user->bio ?? '';
         $isXML = str_starts_with($bio, '<');
+        $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
 
         if ($actor->can('viewBio', $user)) {
             if ($isXML) {
-                $attributes['bioHtml'] = $this->formatter->render($bio);
+                // If formatting is enabled, render the bio HTML. Otherwise pass the unparsed formatting.
+                $attributes['bioHtml'] = $allowFormatting ? $this->formatter->render($bio) : null;
 
-                if ($actor->id === $user->id) {
+                if (!$allowFormatting || $actor->id === $user->id) {
                     $attributes['bio'] = $this->formatter->unparse($bio);
                 }
             } else {
