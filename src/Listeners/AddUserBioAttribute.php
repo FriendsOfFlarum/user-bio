@@ -46,7 +46,7 @@ class AddUserBioAttribute
         $actor = $serializer->getActor();
 
         $bio = $user->bio ?? '';
-        $isXML = str_starts_with($bio, '<');
+        $isXML = str_starts_with($bio, '<') && str_ends_with($bio, '>');
         $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
 
         if ($actor->can('viewBio', $user)) {
