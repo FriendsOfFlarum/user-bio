@@ -16,7 +16,6 @@ use Flarum\Extend as Flarum;
 use Flarum\Settings\Event\Saved;
 use Flarum\User\Event\Saving;
 use Flarum\User\User;
-use s9e\TextFormatter\Configurator;
 
 return [
     (new Flarum\Frontend('forum'))
