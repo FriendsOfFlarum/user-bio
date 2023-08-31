@@ -44,9 +44,4 @@ return [
 
     (new Flarum\ServiceProvider())
         ->register(Formatter\FormatterServiceProvider::class),
-
-    (new Extend\Formatter())
-        ->configure(function (Configurator $configurator) {
-            $configurator->Censor->add('test');
-        }),
 ];
