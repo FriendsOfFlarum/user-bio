@@ -61,18 +61,24 @@ class SaveUserBio
             $actor->assertCan('editBio', $user);
 
             $this->validator->assertValid(Arr::only($attributes, 'bio'));
+            
+            $numNewLines = substr_count($attributes['bio'], "\n");
 
-            $user->bio = Str::of($attributes['bio'])->trim();
+            $maxNewLines = $this->settings->get('fof-user-bio.maxNewlines', 4);
 
-            if ($allowFormatting) {
-                $user->bio = $this->formatter->parse($user->bio);
+            if ($numNewLines <= $maxNewLines) {
+                $user->bio = Str::of($attributes['bio'])->trim();
+
+                if ($allowFormatting) {
+                    $user->bio = $this->formatter->parse($user->bio);
+                }
+
+                if ($user->bio != $user->getOriginal('bio')) {
+                    $user->raise(new BioChanged($user));
+                }
+
+                $user->save();
             }
-
-            if ($user->bio != $user->getOriginal('bio')) {
-                $user->raise(new BioChanged($user));
-            }
-
-            $user->save();
         }
     }
 }
