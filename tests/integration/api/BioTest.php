@@ -63,8 +63,8 @@ class BioTest extends TestCase
                     'email'              => 'normal4@machine.local',
                     'is_email_confirmed' => 1,
                     'last_seen_at'       => Carbon::now()->subHour(),
-                    'bio'               => '<t><p>Bio content<br/>123</p></t>'
-                ]
+                    'bio'                => '<t><p>Bio content<br/>123</p></t>',
+                ],
             ],
             'group_user' => [
                 ['user_id' => 5, 'group_id' => 4],
@@ -73,7 +73,7 @@ class BioTest extends TestCase
                 ['permission' => 'fof-user-bio.editOwn', 'group_id' => 4],
                 ['permission' => 'fof-user-bio.view', 'group_id' => 4],
                 ['permission' => 'fof-user-bio.editAny', 'group_id' => 4],
-            ]
+            ],
         ]);
     }
 
@@ -137,7 +137,7 @@ class BioTest extends TestCase
     public function admin_can_create_user_with_bio_formatted()
     {
         $this->setting('fof-user-bio.allowFormatting', true);
-        
+
         $response = $this->send(
             $this->request(
                 'POST',
@@ -411,7 +411,7 @@ class BioTest extends TestCase
     public function response_contains_can_view_and_edit_bio_attributes()
     {
         $this->giveNormalUserViewBioPerms();
-        
+
         $response = $this->send(
             $this->request(
                 'GET',
