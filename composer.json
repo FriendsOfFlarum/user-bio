@@ -56,5 +56,8 @@
         "flagrow": {
             "discuss": "https://discuss.flarum.org/d/17775"
         }
+    },
+    "require-dev": {
+        "flarum/bbcode": "*"
     }
 }
