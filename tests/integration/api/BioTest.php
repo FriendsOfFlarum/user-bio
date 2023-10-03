@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of fof/user-bio.
+ *
+ * Copyright (c) FriendsOfFlarum.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FoF\UserBio\tests\integration\api;
 
 use Carbon\Carbon;
@@ -23,22 +32,22 @@ class BioTest extends TestCase
             'users' => [
                 $this->normalUser(),
                 [
-                    'id' => 3,
-                    'username' => 'normal2',
-                    'password' => '$2y$10$LO59tiT7uggl6Oe23o/O6.utnF6ipngYjvMvaxo1TciKqBttDNKim', // BCrypt hash for "too-obscure"
-                    'email' => 'normal2@machine.local',
+                    'id'                 => 3,
+                    'username'           => 'normal2',
+                    'password'           => '$2y$10$LO59tiT7uggl6Oe23o/O6.utnF6ipngYjvMvaxo1TciKqBttDNKim', // BCrypt hash for "too-obscure"
+                    'email'              => 'normal2@machine.local',
                     'is_email_confirmed' => 1,
-                    'last_seen_at' => Carbon::now()->subSecond(),
-                    'bio' => 'This is a test bio for normal2.'
+                    'last_seen_at'       => Carbon::now()->subSecond(),
+                    'bio'                => 'This is a test bio for normal2.',
                 ],
                 [
-                    'id' => 4,
-                    'username' => 'normal3',
-                    'password' => '$2y$10$LO59tiT7uggl6Oe23o/O6.utnF6ipngYjvMvaxo1TciKqBttDNKim', // BCrypt hash for "too-obscure"
-                    'email' => 'normal3@machine.local',
+                    'id'                 => 4,
+                    'username'           => 'normal3',
+                    'password'           => '$2y$10$LO59tiT7uggl6Oe23o/O6.utnF6ipngYjvMvaxo1TciKqBttDNKim', // BCrypt hash for "too-obscure"
+                    'email'              => 'normal3@machine.local',
                     'is_email_confirmed' => 1,
-                    'last_seen_at' => Carbon::now()->subHour(),
-                ]
+                    'last_seen_at'       => Carbon::now()->subHour(),
+                ],
             ],
         ]);
     }
@@ -72,15 +81,15 @@ class BioTest extends TestCase
                 '/api/users',
                 [
                     'authenticatedAs' => 1,
-                    'json' => [
+                    'json'            => [
                         'data' => [
                             'attributes' => [
                                 'username' => 'test',
                                 'password' => 'too-obscure',
-                                'email' => 'test@machine.local',
-                                'bio' => 'This is a test bio.'
+                                'email'    => 'test@machine.local',
+                                'bio'      => 'This is a test bio.',
                             ],
-                        ]
+                        ],
                     ],
                 ]
             )
@@ -108,12 +117,12 @@ class BioTest extends TestCase
                 '/api/users/2',
                 [
                     'authenticatedAs' => 2,
-                    'json' => [
+                    'json'            => [
                         'data' => [
                             'attributes' => [
-                                'bio' => 'This is a test bio.'
+                                'bio' => 'This is a test bio.',
                             ],
-                        ]
+                        ],
                     ],
                 ]
             )
@@ -128,19 +137,19 @@ class BioTest extends TestCase
     public function can_update_own_user_with_added_bio_when_permission_granted()
     {
         $this->giveNormalUsersEditOwnPerms();
-        
+
         $response = $this->send(
             $this->request(
                 'PATCH',
                 '/api/users/2',
                 [
                     'authenticatedAs' => 2,
-                    'json' => [
+                    'json'            => [
                         'data' => [
                             'attributes' => [
-                                'bio' => 'This is a test bio.'
+                                'bio' => 'This is a test bio.',
                             ],
-                        ]
+                        ],
                     ],
                 ]
             )
