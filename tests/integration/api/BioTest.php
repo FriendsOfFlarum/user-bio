@@ -183,6 +183,9 @@ class BioTest extends TestCase
         $this->assertArrayNotHasKey('bio', json_decode($response->getBody()->getContents(), true)['data']['attributes']);
     }
 
+    /**
+     * @test
+     */
     public function normal_user_can_see_others_bio_with_permission()
     {
         $this->giveNormalUserViewBioPerms();
