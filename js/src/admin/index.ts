@@ -35,6 +35,13 @@ app.initializers.add('fof-user-bio', () => {
       placeholder: 200,
     })
     .registerSetting({
+      label: app.translator.trans('fof-user-bio.admin.setting.maxLines'),
+      setting: 'fof-user-bio.maxLines',
+      type: 'number',
+      placeholder: 5,
+      min: 5,
+    })
+    .registerSetting({
       label: app.translator.trans('fof-user-bio.admin.setting.allowFormatting'),
       help: app.translator.trans('fof-user-bio.admin.setting.allowFormatting_help'),
       setting: 'fof-user-bio.allowFormatting',

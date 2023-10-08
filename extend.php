@@ -39,6 +39,7 @@ return [
 
     (new Flarum\Settings())
         ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal')
+        ->serializeToForum('fof-user-bio.maxLines', 'fof-user-bio.maxLines', 'intVal')
         ->default('fof-user-bio.maxLength', 200),
 
     (new Flarum\ServiceProvider())
