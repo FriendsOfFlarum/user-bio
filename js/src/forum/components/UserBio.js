@@ -100,8 +100,10 @@ export default class UserBio extends Component {
         }
       }
 
+      const maxLines = app.forum.attribute('fof-user-bio.maxLines');
+
       content = (
-        <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined}>
+        <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined} style={{ '--bio-max-lines': maxLines }}>
           {subContent}
         </div>
       );

@@ -36,6 +36,10 @@
 
 .UserBio-content {
     padding: 10px 10px 1px;
+
+    line-height: 21px;
+    max-height: calc(~"1px + 20px + 21px * max(var(--bio-max-lines), 5)"); // padding + line-height * lines
+    overflow-y: auto;
 }
 
 .UserBio-placeholder {
