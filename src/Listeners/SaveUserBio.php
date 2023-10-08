@@ -62,13 +62,16 @@ class SaveUserBio
 
             $this->validator->assertValid(Arr::only($attributes, 'bio'));
 
-            $user->bio = Str::of($attributes['bio'])->trim();
+            $bio = Str::of($attributes['bio'])->trim();
+            $bio = preg_replace('/\R{3,}/u', "\n\n", $bio);
 
             if ($allowFormatting) {
-                $user->bio = $this->formatter->parse($user->bio);
+                $user->bio = $this->formatter->parse($bio);
+            } else {
+                $user->bio = $bio;
             }
 
-            if ($user->bio != $user->getOriginal('bio')) {
+            if ($user->isDirty('bio')) {
                 $user->raise(new BioChanged($user));
             }
         }
