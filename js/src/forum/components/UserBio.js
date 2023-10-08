@@ -49,8 +49,35 @@ export default class UserBio extends Component {
     let content;
 
     if (this.editing) {
+      const tempBio = this.tempBio;
+      const value = tempBio ?? user.bio();
+
+      const focusIfErrored = (vnode) => {
+        const textarea = vnode.dom;
+
+        textarea.value = value;
+
+        if (tempBio !== undefined) {
+          textarea.value = tempBio;
+          textarea.focus();
+
+          if (this.tempSelector !== undefined) {
+            textarea.selectionStart = this.tempSelector;
+            textarea.selectionEnd = this.tempSelector;
+
+            delete this.tempSelector;
+          }
+        }
+      };
+
       content = (
-        <textarea className="FormControl" placeholder={extractText(this.bioPlaceholder)} rows="3" maxlength={this.bioMaxLength} value={user.bio()} />
+        <textarea
+          className="FormControl"
+          placeholder={extractText(this.bioPlaceholder)}
+          rows="3"
+          maxlength={this.bioMaxLength}
+          oncreate={focusIfErrored}
+        />
       );
     } else {
       let subContent;
@@ -106,10 +133,11 @@ export default class UserBio extends Component {
     const save = function (e) {
       if (e.shiftKey) return;
       e.preventDefault();
-      bio.save($(this).val());
+
+      bio.save(e.target.value, e.type === 'blur');
     };
 
-    this.$('textarea').focus().bind('blur', save).bind('keydown', 'return', save);
+    this.$('textarea').trigger('focus').on('blur', save).bind('keydown', 'return', save);
     m.redraw();
   }
 
@@ -118,19 +146,32 @@ export default class UserBio extends Component {
    *
    * @param {String} value
    */
-  save(value) {
+  save(value, wasBlurred) {
     const user = this.attrs.user;
+    const tempSelector = this.$('textarea').prop('selectionStart');
 
-    if (user.bio() !== value) {
+    const shouldIgnore = wasBlurred && value === this.tempBio;
+
+    // Don't constantly try to save when blurring textarea
+    if (!shouldIgnore && user.bio() !== value) {
       this.loading = true;
 
       user
         .save({ bio: value })
-        .catch(() => {})
+        .catch(() => {
+          this.tempBio = value;
+          this.tempSelector = tempSelector;
+          this.edit();
+        })
         .then(() => {
           this.loading = false;
+          delete this.tempBio;
           m.redraw();
         });
+    }
+
+    if (shouldIgnore) {
+      delete this.tempBio;
     }
 
     this.editing = false;
