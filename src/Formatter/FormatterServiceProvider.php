@@ -15,7 +15,7 @@ use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Foundation\Paths;
 use Illuminate\Cache\Repository;
-use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\Container;
 
 class FormatterServiceProvider extends AbstractServiceProvider
 {

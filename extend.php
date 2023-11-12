@@ -27,6 +27,9 @@ return [
 
     new Flarum\Locales(__DIR__.'/resources/locale'),
 
+    (new Flarum\Model(User::class))
+        ->cast('bio', 'string'),
+
     (new Flarum\Event())
         ->listen(Saving::class, Listeners\SaveUserBio::class)
         ->listen(Saved::class, Listeners\ClearFormatterCache::class),
