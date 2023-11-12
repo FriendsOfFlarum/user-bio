@@ -51,6 +51,7 @@ class UserPolicy extends AbstractPolicy
         // suspended_until is null if flarum/suspend isn't installed
         // laravel sets all non existing attributes to null
         // suspend_until is also null if the user isn't suspended.
+        /** @phpstan-ignore-next-line */
         return $user->suspended_until !== null
             && $user->suspended_until instanceof Carbon
             && $user->suspended_until->isFuture();

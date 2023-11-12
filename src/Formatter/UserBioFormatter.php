@@ -63,6 +63,7 @@ class UserBioFormatter extends Formatter
         $configurator = parent::getConfigurator();
 
         if ($this->extensions->isEnabled('flarum-markdown')) {
+            /** @phpstan-ignore-next-line */
             $configurator->Litedown;
         }
 
