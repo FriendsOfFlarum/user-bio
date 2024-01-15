@@ -39,7 +39,7 @@ export default class UserBio extends Component {
           app.translator.trans('fof-user-bio.forum.userbioPlaceholder')
         : // Special placeholder if someone else is viewing their profile with edit access
           app.translator.trans('fof-user-bio.forum.userbioPlaceholderOtherUser', {
-            username: this.attrs.user.username(),
+            username: this.attrs.user.displayName(),
           });
   }
 
