@@ -1,6 +1,7 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
+import Button from 'flarum/common/components/Button';
 import classList from 'flarum/common/utils/classList';
 import extractText from 'flarum/common/utils/extractText';
 
@@ -12,18 +13,26 @@ export default class UserBio extends Component {
   oninit(vnode) {
     super.oninit(vnode);
     /**
-     * Whether or not the bio is currently being edited.
+     * Whether the bio is currently being edited.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.editing = false;
 
     /**
-     * Whether or not the bio is currently being saved.
+     * Whether the bio is currently being saved.
      *
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.loading = false;
+
+    /**
+     * The rows to show in the textarea by default when editing.
+     * This is set to 5 by default, but can be overridden by the `--bio-max-lines` CSS variable.
+     *
+     * @type {string}
+     */
+    this.textareaRows = '5';
 
     /**
      * The max configured character count the bio may be
@@ -45,7 +54,7 @@ export default class UserBio extends Component {
 
   view() {
     const user = this.attrs.user;
-    const editable = this.attrs.user.attribute('canEditBio');
+    const editable = this.attrs.editable && this.attrs.user.attribute('canEditBio');
     let content;
 
     if (this.editing) {
@@ -74,7 +83,7 @@ export default class UserBio extends Component {
         <textarea
           className="FormControl"
           placeholder={extractText(this.bioPlaceholder)}
-          rows="3"
+          rows={this.textareaRows}
           maxlength={this.bioMaxLength}
           oncreate={focusIfErrored}
         />
@@ -100,10 +109,19 @@ export default class UserBio extends Component {
         }
       }
 
-      const maxLines = app.forum.attribute('fof-user-bio.maxLines');
+      const maxLines = app.forum.attribute('fof-user-bio.maxLines') || 5;
 
       content = (
-        <div className="UserBio-content" onclick={editable ? this.edit.bind(this) : () => undefined} style={{ '--bio-max-lines': maxLines }}>
+        <div
+          className="UserBio-content"
+          // onclick={editable ? this.edit.bind(this) : () => undefined}
+          onclick={editable ? this.edit.bind(this) : () => undefined}
+          onkeydown={editable ? this.onkeydown.bind(this) : () => undefined}
+          style={{ '--bio-max-lines': maxLines }}
+          role={editable ? 'button' : undefined}
+          tabindex={editable ? '0' : undefined}
+          aria-label={editable ? app.translator.trans('fof-user-bio.forum.profile.edit_bio_label') : undefined}
+        >
           {subContent}
         </div>
       );
@@ -120,42 +138,64 @@ export default class UserBio extends Component {
         }
       >
         {content}
+        {this.editing && (
+          <div className="UserBio-actions">
+            <Button className="Button Button--primary" onclick={this.save.bind(this)}>
+              {app.translator.trans('fof-user-bio.forum.profile.save_button')}
+            </Button>
+            <Button className="Button" onclick={this.reset.bind(this)}>
+              {app.translator.trans('fof-user-bio.forum.profile.cancel_button')}
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
 
+  onkeydown(e) {
+    // Allow keyboard navigation to turn editing mode on
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.edit(e);
+    }
+  }
+
   /**
    * Edit the bio.
+   * @param {MouseEvent} e
    */
-  edit() {
+  edit(e) {
+    // Maintain the scroll position & cursor position when editing
+    const selection = window.getSelection();
+    const lineIndex = selection.anchorOffset;
+    let lengthBefore = 0;
+
+    for (let prev = selection.anchorNode.previousSibling; prev; prev = prev.previousSibling) {
+      lengthBefore += prev.textContent.length;
+    }
+
+    const currentScroll = e.target.scrollTop;
+    const index = lengthBefore + lineIndex;
+
+    // Show the same number of lines to avoid layout shift
+    this.textareaRows = getComputedStyle(e.target).getPropertyValue('--bio-max-lines') || '5';
+
     this.editing = true;
     m.redraw.sync();
 
-    const bio = this;
-    const save = function (e) {
-      if (e.shiftKey) return;
-      e.preventDefault();
-
-      bio.save(e.target.value, e.type === 'blur');
-    };
-
-    this.$('textarea').trigger('focus').on('blur', save).bind('keydown', 'return', save);
-    m.redraw();
+    this.$('textarea').trigger('focus').prop('selectionStart', index).prop('selectionEnd', index).prop('scrollTop', currentScroll);
   }
 
   /**
    * Save the bio.
-   *
-   * @param {String} value
    */
-  save(value, wasBlurred) {
+  save() {
+    const value = this.$('textarea').val();
     const user = this.attrs.user;
     const tempSelector = this.$('textarea').prop('selectionStart');
 
-    const shouldIgnore = wasBlurred && value === this.tempBio;
-
     // Don't constantly try to save when blurring textarea
-    if (!shouldIgnore && user.bio() !== value) {
+    if (this.isDirty()) {
       this.loading = true;
 
       user
@@ -172,11 +212,23 @@ export default class UserBio extends Component {
         });
     }
 
-    if (shouldIgnore) {
-      delete this.tempBio;
-    }
-
     this.editing = false;
     m.redraw();
+  }
+
+  reset() {
+    // Either nothing changed or we want to confirm the loss of changes
+    if (!this.isDirty() || confirm(extractText(app.translator.trans('fof-user-bio.forum.profile.cancel_confirm')))) {
+      this.editing = false;
+      delete this.tempBio;
+      m.redraw();
+    }
+  }
+
+  isDirty() {
+    const value = this.$('textarea').val();
+    const user = this.attrs.user;
+
+    return user.bio() !== value;
   }
 }
