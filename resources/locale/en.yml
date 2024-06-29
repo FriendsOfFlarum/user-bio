@@ -13,3 +13,9 @@ fof-user-bio:
     forum:
         userbioPlaceholder: Write something about yourself
         userbioPlaceholderOtherUser: Write a bio for {username}
+
+        profile:
+            cancel_confirm: Are you sure you want to cancel editing your bio? You'll lose any changes you've made.
+            cancel_button: Cancel
+            save_button: Save
+            edit_bio_label: Edit bio

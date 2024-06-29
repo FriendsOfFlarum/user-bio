@@ -32,7 +32,26 @@
         color: white;
         height: 50px;
     }
+
+    &-actions {
+        margin-top: 5px;
+        display: inline-flex;
+        gap: 5px;
+
+        .Button--primary {
+            background-color: var(--button-bg);
+
+            &, &:hover {
+                color: var(--button-color);
+            }
+
+            &:hover {
+                background-color: var(--button-bg-hover);
+            }
+        }
+    }
 }
+
 
 .UserBio-content {
     padding: 10px 10px 1px;
