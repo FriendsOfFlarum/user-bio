@@ -12,8 +12,12 @@
 
     &.editable:not(.editing) {
         cursor: text;
+        border-color: rgba(255, 255, 255, 0.1);
+        transition: 0.2s ease border-color;
 
-        border-color: rgba(255, 255, 255, 0.2);
+        &:hover, &:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
     }
 
     &, textarea {
