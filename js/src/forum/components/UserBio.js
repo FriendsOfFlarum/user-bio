@@ -80,13 +80,23 @@ export default class UserBio extends Component {
       };
 
       content = (
-        <textarea
-          className="FormControl"
-          placeholder={extractText(this.bioPlaceholder)}
-          rows={this.textareaRows}
-          maxlength={this.bioMaxLength}
-          oncreate={focusIfErrored}
-        />
+        <form onsubmit={this.save.bind(this)}>
+          <textarea
+            className="FormControl"
+            placeholder={extractText(this.bioPlaceholder)}
+            rows={this.textareaRows}
+            maxlength={this.bioMaxLength}
+            oncreate={focusIfErrored}
+          />
+          <div className="UserBio-actions">
+            <Button className="Button Button--primary" type="submit">
+              {app.translator.trans('fof-user-bio.forum.profile.save_button')}
+            </Button>
+            <Button className="Button" type="reset" onclick={this.reset.bind(this)}>
+              {app.translator.trans('fof-user-bio.forum.profile.cancel_button')}
+            </Button>
+          </div>
+        </form>
       );
     } else {
       let subContent;
@@ -138,16 +148,6 @@ export default class UserBio extends Component {
         }
       >
         {content}
-        {this.editing && (
-          <div className="UserBio-actions">
-            <Button className="Button Button--primary" onclick={this.save.bind(this)}>
-              {app.translator.trans('fof-user-bio.forum.profile.save_button')}
-            </Button>
-            <Button className="Button" onclick={this.reset.bind(this)}>
-              {app.translator.trans('fof-user-bio.forum.profile.cancel_button')}
-            </Button>
-          </div>
-        )}
       </div>
     );
   }
@@ -165,20 +165,25 @@ export default class UserBio extends Component {
    * @param {MouseEvent} e
    */
   edit(e) {
+    // If the click is special, do not switch to editing mode.
+    // e.g. allows for Ctrl+Click to open a link in a new tab
+    if (e.ctrlKey || e.metaKey) return;
+
+    e.preventDefault();
+
     // Maintain the scroll position & cursor position when editing
     const selection = window.getSelection();
     const lineIndex = selection.anchorOffset;
-    let lengthBefore = 0;
 
-    for (let prev = selection.anchorNode.previousSibling; prev; prev = prev.previousSibling) {
-      lengthBefore += prev.textContent.length;
-    }
+    // Sometimes, links are clicked and the anchorNode is either null or the UserBio-content itself
+    const clickedNode = !selection.anchorNode || !e.target.className.includes('UserBio') ? e.target : selection.anchorNode;
+    const lengthBefore = this.countTextLengthBefore(clickedNode);
 
-    const currentScroll = e.target.scrollTop;
+    const currentScroll = e.currentTarget.scrollTop;
     const index = lengthBefore + lineIndex;
 
     // Show the same number of lines to avoid layout shift
-    this.textareaRows = getComputedStyle(e.target).getPropertyValue('--bio-max-lines') || '5';
+    this.textareaRows = getComputedStyle(e.currentTarget).getPropertyValue('--bio-max-lines') || '5';
 
     this.editing = true;
     m.redraw.sync();
@@ -189,7 +194,9 @@ export default class UserBio extends Component {
   /**
    * Save the bio.
    */
-  save() {
+  save(e) {
+    e.preventDefault();
+
     const value = this.$('textarea').val();
     const user = this.attrs.user;
     const tempSelector = this.$('textarea').prop('selectionStart');
@@ -216,7 +223,10 @@ export default class UserBio extends Component {
     m.redraw();
   }
 
-  reset() {
+  reset(e) {
+    // Don't want to actually reset the form
+    e.preventDefault();
+
     // Either nothing changed or we want to confirm the loss of changes
     if (!this.isDirty() || confirm(extractText(app.translator.trans('fof-user-bio.forum.profile.cancel_confirm')))) {
       this.editing = false;
@@ -230,5 +240,27 @@ export default class UserBio extends Component {
     const user = this.attrs.user;
 
     return user.bio() !== value;
+  }
+
+  /**
+   *
+   * @param {Node} anchorNode
+   * @returns {number}
+   */
+  countTextLengthBefore(anchorNode) {
+    if (!anchorNode || (anchorNode instanceof HTMLElement && anchorNode.className.includes('UserBio'))) return 0;
+
+    let length = 0;
+
+    if (anchorNode.previousSibling) {
+      for (let prev = anchorNode.previousSibling; prev; prev = prev.previousSibling) {
+        length += prev.textContent.length;
+      }
+    }
+
+    const parent = anchorNode.parentNode;
+
+    // We need to recursively call this function if the anchorNode is not a direct child of UserBio-content
+    return length + this.countTextLengthBefore(anchorNode.parentNode);
   }
 }
