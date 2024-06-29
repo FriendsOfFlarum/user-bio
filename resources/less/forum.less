@@ -13,9 +13,7 @@
     &.editable:not(.editing) {
         cursor: text;
 
-        &:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
+        border-color: rgba(255, 255, 255, 0.2);
     }
 
     &, textarea {
@@ -31,6 +29,15 @@
     .LoadingIndicator-container {
         color: white;
         height: 50px;
+    }
+
+    a {
+        font-weight: 600;
+
+        &:hover {
+            border-bottom: 1px solid;
+            text-decoration: none;
+        }
     }
 
     &-actions {
