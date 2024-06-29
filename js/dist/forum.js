@@ -135,13 +135,24 @@ var UserBio = /*#__PURE__*/function (_Component) {
           }
         }
       };
-      content = m("textarea", {
+      content = m("form", {
+        onsubmit: this.save.bind(this)
+      }, m("textarea", {
         className: "FormControl",
         placeholder: flarum_common_utils_extractText__WEBPACK_IMPORTED_MODULE_6___default()(this.bioPlaceholder),
         rows: this.textareaRows,
         maxlength: this.bioMaxLength,
         oncreate: focusIfErrored
-      });
+      }), m("div", {
+        className: "UserBio-actions"
+      }, m((flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default()), {
+        className: "Button Button--primary",
+        type: "submit"
+      }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('fof-user-bio.forum.profile.save_button')), m((flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default()), {
+        className: "Button",
+        type: "reset",
+        onclick: this.reset.bind(this)
+      }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('fof-user-bio.forum.profile.cancel_button'))));
     } else {
       var subContent;
       if (this.loading) {
@@ -186,15 +197,7 @@ var UserBio = /*#__PURE__*/function (_Component) {
         editable: editable,
         editing: this.editing
       })
-    }, content, this.editing && m("div", {
-      className: "UserBio-actions"
-    }, m((flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default()), {
-      className: "Button Button--primary",
-      onclick: this.save.bind(this)
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('fof-user-bio.forum.profile.save_button')), m((flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default()), {
-      className: "Button",
-      onclick: this.reset.bind(this)
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('fof-user-bio.forum.profile.cancel_button'))));
+    }, content);
   };
   _proto.onkeydown = function onkeydown(e) {
     // Allow keyboard navigation to turn editing mode on
@@ -209,18 +212,23 @@ var UserBio = /*#__PURE__*/function (_Component) {
    * @param {MouseEvent} e
    */;
   _proto.edit = function edit(e) {
+    // If the click is special, do not switch to editing mode.
+    // e.g. allows for Ctrl+Click to open a link in a new tab
+    if (e.ctrlKey || e.metaKey) return;
+    e.preventDefault();
+
     // Maintain the scroll position & cursor position when editing
     var selection = window.getSelection();
     var lineIndex = selection.anchorOffset;
-    var lengthBefore = 0;
-    for (var prev = selection.anchorNode.previousSibling; prev; prev = prev.previousSibling) {
-      lengthBefore += prev.textContent.length;
-    }
-    var currentScroll = e.target.scrollTop;
+
+    // Sometimes, links are clicked and the anchorNode is either null or the UserBio-content itself
+    var clickedNode = !selection.anchorNode || !e.target.className.includes('UserBio') ? e.target : selection.anchorNode;
+    var lengthBefore = this.countTextLengthBefore(clickedNode);
+    var currentScroll = e.currentTarget.scrollTop;
     var index = lengthBefore + lineIndex;
 
     // Show the same number of lines to avoid layout shift
-    this.textareaRows = getComputedStyle(e.target).getPropertyValue('--bio-max-lines') || '5';
+    this.textareaRows = getComputedStyle(e.currentTarget).getPropertyValue('--bio-max-lines') || '5';
     this.editing = true;
     m.redraw.sync();
     this.$('textarea').trigger('focus').prop('selectionStart', index).prop('selectionEnd', index).prop('scrollTop', currentScroll);
@@ -229,8 +237,9 @@ var UserBio = /*#__PURE__*/function (_Component) {
   /**
    * Save the bio.
    */;
-  _proto.save = function save() {
+  _proto.save = function save(e) {
     var _this2 = this;
+    e.preventDefault();
     var value = this.$('textarea').val();
     var user = this.attrs.user;
     var tempSelector = this.$('textarea').prop('selectionStart');
@@ -253,7 +262,10 @@ var UserBio = /*#__PURE__*/function (_Component) {
     this.editing = false;
     m.redraw();
   };
-  _proto.reset = function reset() {
+  _proto.reset = function reset(e) {
+    // Don't want to actually reset the form
+    e.preventDefault();
+
     // Either nothing changed or we want to confirm the loss of changes
     if (!this.isDirty() || confirm(flarum_common_utils_extractText__WEBPACK_IMPORTED_MODULE_6___default()(flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('fof-user-bio.forum.profile.cancel_confirm')))) {
       this.editing = false;
@@ -265,6 +277,25 @@ var UserBio = /*#__PURE__*/function (_Component) {
     var value = this.$('textarea').val();
     var user = this.attrs.user;
     return user.bio() !== value;
+  }
+
+  /**
+   *
+   * @param {Node} anchorNode
+   * @returns {number}
+   */;
+  _proto.countTextLengthBefore = function countTextLengthBefore(anchorNode) {
+    if (!anchorNode || anchorNode instanceof HTMLElement && anchorNode.className.includes('UserBio')) return 0;
+    var length = 0;
+    if (anchorNode.previousSibling) {
+      for (var prev = anchorNode.previousSibling; prev; prev = prev.previousSibling) {
+        length += prev.textContent.length;
+      }
+    }
+    var parent = anchorNode.parentNode;
+
+    // We need to recursively call this function if the anchorNode is not a direct child of UserBio-content
+    return length + this.countTextLengthBefore(anchorNode.parentNode);
   };
   return UserBio;
 }((flarum_common_Component__WEBPACK_IMPORTED_MODULE_2___default()));
