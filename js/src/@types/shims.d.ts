@@ -5,5 +5,6 @@ declare module 'flarum/common/models/User' {
     bio(): string;
     bioHtml(): string;
     canViewBio(): boolean;
+    canEditBio(): boolean;
   }
 }

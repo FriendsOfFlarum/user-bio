@@ -1,43 +1,35 @@
 import app from 'flarum/forum/app';
-import Component from 'flarum/common/Component';
+import Component, { ComponentAttrs } from 'flarum/common/Component';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Button from 'flarum/common/components/Button';
 import classList from 'flarum/common/utils/classList';
 import extractText from 'flarum/common/utils/extractText';
 
-/**
- * The `UserBio` component displays a user's bio, optionally letting the user
- * edit it.
- */
-export default class UserBio extends Component {
-  oninit(vnode) {
+import type Mithril from 'mithril';
+import type User from 'flarum/common/models/User';
+import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
+
+export interface UserBioAttrs extends ComponentAttrs {
+  user: User;
+  editable: boolean;
+}
+
+export default class UserBio extends Component<UserBioAttrs> {
+  editing: boolean = false;
+  loading: boolean = false;
+  textareaRows: string = '5';
+  bioMaxLength: number = 200;
+  bioPlaceholder: string | NestedStringArray = '';
+  tempBio: unknown;
+  tempSelector: number | undefined;
+
+  oninit(vnode: Mithril.Vnode<UserBioAttrs>): void {
     super.oninit(vnode);
-    /**
-     * Whether the bio is currently being edited.
-     *
-     * @type {boolean}
-     */
-    this.editing = false;
-
-    /**
-     * Whether the bio is currently being saved.
-     *
-     * @type {boolean}
-     */
-    this.loading = false;
-
-    /**
-     * The rows to show in the textarea by default when editing.
-     * This is set to 5 by default, but can be overridden by the `--bio-max-lines` CSS variable.
-     *
-     * @type {string}
-     */
-    this.textareaRows = '5';
 
     /**
      * The max configured character count the bio may be
      */
-    this.bioMaxLength = app.forum.attribute('fof-user-bio.maxLength');
+    this.bioMaxLength = app.forum.attribute<number>('fof-user-bio.maxLength');
 
     /**
      * The placeholder shown in the bio textbox when no input is set.
@@ -52,9 +44,10 @@ export default class UserBio extends Component {
           });
   }
 
-  view() {
+  view(): Mithril.Children {
     const user = this.attrs.user;
-    const editable = this.attrs.editable && this.attrs.user.attribute('canEditBio');
+    const editable = this.attrs.editable && this.attrs.user.canEditBio();
+
     let content;
 
     if (this.editing) {
@@ -152,7 +145,7 @@ export default class UserBio extends Component {
     );
   }
 
-  onkeydown(e) {
+  onkeydown(e: KeyboardEvent): void {
     // Allow keyboard navigation to turn editing mode on
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -162,9 +155,8 @@ export default class UserBio extends Component {
 
   /**
    * Edit the bio.
-   * @param {MouseEvent} e
    */
-  edit(e) {
+  edit(e: MouseEvent): void {
     // If the click is special, do not switch to editing mode.
     // e.g. allows for Ctrl+Click to open a link in a new tab
     if (e.ctrlKey || e.metaKey) return;
@@ -173,10 +165,10 @@ export default class UserBio extends Component {
 
     // Maintain the scroll position & cursor position when editing
     const selection = window.getSelection();
-    const lineIndex = selection.anchorOffset;
+    const lineIndex = selection?.anchorOffset;
 
     // Sometimes, links are clicked and the anchorNode is either null or the UserBio-content itself
-    const clickedNode = !selection.anchorNode || !e.target.className.includes('UserBio') ? e.target : selection.anchorNode;
+    const clickedNode = !selection?.anchorNode || !e.target.className.includes('UserBio') ? e.target : selection.anchorNode;
     const lengthBefore = this.countTextLengthBefore(clickedNode);
 
     const currentScroll = e.currentTarget.scrollTop;
@@ -194,7 +186,7 @@ export default class UserBio extends Component {
   /**
    * Save the bio.
    */
-  save(e) {
+  save(e: SubmitEvent): void {
     e.preventDefault();
 
     const value = this.$('textarea').val();
@@ -223,7 +215,7 @@ export default class UserBio extends Component {
     m.redraw();
   }
 
-  reset(e) {
+  reset(e: PointerEvent): void {
     // Don't want to actually reset the form
     e.preventDefault();
 
@@ -235,19 +227,14 @@ export default class UserBio extends Component {
     }
   }
 
-  isDirty() {
+  isDirty(): boolean {
     const value = this.$('textarea').val();
     const user = this.attrs.user;
 
     return user.bio() !== value;
   }
 
-  /**
-   *
-   * @param {Node} anchorNode
-   * @returns {number}
-   */
-  countTextLengthBefore(anchorNode) {
+  countTextLengthBefore(anchorNode: Node): number {
     if (!anchorNode || (anchorNode instanceof HTMLElement && anchorNode.className.includes('UserBio'))) return 0;
 
     let length = 0;
@@ -257,8 +244,6 @@ export default class UserBio extends Component {
         length += prev.textContent.length;
       }
     }
-
-    const parent = anchorNode.parentNode;
 
     // We need to recursively call this function if the anchorNode is not a direct child of UserBio-content
     return length + this.countTextLengthBefore(anchorNode.parentNode);

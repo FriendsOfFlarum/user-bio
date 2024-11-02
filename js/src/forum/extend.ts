@@ -5,5 +5,6 @@ export default [
   new Extend.Model(User) //
     .attribute<string>('bio')
     .attribute<string>('bioHtml')
-    .attribute<boolean>('canViewBio'),
+    .attribute<boolean>('canViewBio')
+    .attribute<boolean>('canEditBio'),
 ];
