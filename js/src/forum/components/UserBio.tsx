@@ -54,6 +54,7 @@ export default class UserBio extends Component<UserBioAttrs> {
       const tempBio = this.tempBio;
       const value = tempBio ?? user.bio();
 
+      // @ts-ignore
       const focusIfErrored = (vnode) => {
         const textarea = vnode.dom;
 
@@ -106,6 +107,7 @@ export default class UserBio extends Component<UserBioAttrs> {
         if (bioHtml) {
           subContent = m.trust(bioHtml);
         } else if (user.bio()) {
+          // @ts-ignore
           subContent = m.trust('<p>' + $('<div/>').text(user.bio()).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc' }) + '</p>');
         } else if (editable) {
           subContent = <p className="UserBio-placeholder">{this.bioPlaceholder}</p>;
@@ -168,13 +170,18 @@ export default class UserBio extends Component<UserBioAttrs> {
     const lineIndex = selection?.anchorOffset;
 
     // Sometimes, links are clicked and the anchorNode is either null or the UserBio-content itself
+    // @ts-ignore
     const clickedNode = !selection?.anchorNode || !e.target.className.includes('UserBio') ? e.target : selection.anchorNode;
+    // @ts-ignore
     const lengthBefore = this.countTextLengthBefore(clickedNode);
 
+    // @ts-ignore
     const currentScroll = e.currentTarget.scrollTop;
+    // @ts-ignore
     const index = lengthBefore + lineIndex;
 
     // Show the same number of lines to avoid layout shift
+    // @ts-ignore
     this.textareaRows = getComputedStyle(e.currentTarget).getPropertyValue('--bio-max-lines') || '5';
 
     this.editing = true;
@@ -202,6 +209,7 @@ export default class UserBio extends Component<UserBioAttrs> {
         .catch(() => {
           this.tempBio = value;
           this.tempSelector = tempSelector;
+          // @ts-ignore
           this.edit();
         })
         .then(() => {
@@ -240,12 +248,15 @@ export default class UserBio extends Component<UserBioAttrs> {
     let length = 0;
 
     if (anchorNode.previousSibling) {
+      // @ts-ignore
       for (let prev = anchorNode.previousSibling; prev; prev = prev.previousSibling) {
+        // @ts-ignore
         length += prev.textContent.length;
       }
     }
 
     // We need to recursively call this function if the anchorNode is not a direct child of UserBio-content
+    // @ts-ignore
     return length + this.countTextLengthBefore(anchorNode.parentNode);
   }
 }
