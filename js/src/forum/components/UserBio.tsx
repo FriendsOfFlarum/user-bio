@@ -112,7 +112,7 @@ export default class UserBio extends Component<UserBioAttrs> {
         }
       }
 
-      const maxLines = app.forum.attribute('fof-user-bio.maxLines') || 5;
+      const maxLines = app.forum.attribute<number>('fof-user-bio.maxLines') || 5;
 
       content = (
         <div
@@ -156,10 +156,10 @@ export default class UserBio extends Component<UserBioAttrs> {
   /**
    * Edit the bio.
    */
-  edit(e: MouseEvent): void {
+  edit(e: PointerEvent | KeyboardEvent | SubmitEvent): void {
     // If the click is special, do not switch to editing mode.
     // e.g. allows for Ctrl+Click to open a link in a new tab
-    if (e.ctrlKey || e.metaKey) return;
+    if ((e as KeyboardEvent).ctrlKey || (e as KeyboardEvent).metaKey) return;
 
     e.preventDefault();
 
