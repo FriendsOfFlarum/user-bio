@@ -5,7 +5,7 @@
     "dependencies": {
         "@flarum/prettier-config": "^1.0.0",
         "autolink-js": "1.0.2",
-        "flarum-tsconfig": "^1.0.2",
+        "flarum-tsconfig": "^1.0.3",
         "flarum-webpack-config": "^2.0.2",
         "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4"
