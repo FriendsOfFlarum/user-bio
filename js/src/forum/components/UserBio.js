@@ -113,7 +113,9 @@ export default class UserBio extends Component {
         if (bioHtml) {
           subContent = m.trust(bioHtml);
         } else if (user.bio()) {
-          subContent = m.trust('<p>' + $('<div/>').text(user.bio()).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc' }) + '</p>');
+          subContent = m.trust(
+            '<p>' + $('<div/>').text(user.bio()).html().replace(/\n/g, '<br>').autoLink({ rel: 'nofollow ugc', target: '_blank' }) + '</p>'
+          );
         } else if (editable) {
           subContent = <p className="UserBio-placeholder">{this.bioPlaceholder}</p>;
         }

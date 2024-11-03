@@ -71,6 +71,18 @@ class UserBioFormatter extends Formatter
             (new \Flarum\BBCode\Configure())($configurator);
         }
 
+        // Add target="_blank" and rel="noopener ugc" to all URL tags on the UserBioFormatter
+        $dom = $configurator->tags['URL']->template->asDOM();
+
+        foreach ($dom->getElementsByTagName('a') as $a) {
+            $a->setAttribute('target', '_blank');
+
+            $rel = $a->getAttribute('rel');
+            $a->setAttribute('rel', "$rel noopener ugc");
+        }
+
+        $dom->saveChanges();
+
         return $configurator;
     }
 
