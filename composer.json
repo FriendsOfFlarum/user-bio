@@ -50,7 +50,8 @@
                 "color": "#fff"
             },
             "optional-dependencies": [
-                "flarum/suspend"
+                "flarum/suspend",
+                "flarum/gdpr"
             ]
         },
         "flagrow": {
@@ -67,7 +68,8 @@
         "flarum/bbcode": "*",
         "flarum/testing": "^1.0.0",
         "flarum/phpstan": "*",
-        "flarum/suspend": "*"
+        "flarum/suspend": "*",
+        "flarum/gdpr": "dev-main"
     },
     "autoload-dev": {
         "psr-4": {
