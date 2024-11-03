@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of fof/user-bio.
+ *
+ * Copyright (c) FriendsOfFlarum.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FoF\UserBio\Tests\integration\api;
 
 use Carbon\Carbon;
@@ -11,7 +20,7 @@ use Flarum\User\User;
 class GdprIntegrationTest extends TestCase
 {
     use RetrievesAuthorizedUsers;
-    
+
     public function setUp(): void
     {
         parent::setUp();
