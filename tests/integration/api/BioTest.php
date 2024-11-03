@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\tests\integration\api;
+namespace FoF\UserBio\Tests\integration\api;
 
 use Carbon\Carbon;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
