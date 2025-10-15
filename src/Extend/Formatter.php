@@ -74,7 +74,7 @@ class Formatter extends FlarumFormatter
         // do nothing
     }
 
-    public function extend(Container $container, Extension $extension = null)
+    public function extend(Container $container, ?Extension $extension = null)
     {
         $container->extend('fof-user-bio.formatter', function ($formatter, $container) {
             foreach ($this->configurationCallbacks as $callback) {

@@ -29,7 +29,7 @@ class BioChanged
      * @param User $user
      * @param User $actor
      */
-    public function __construct(User $user, User $actor = null)
+    public function __construct(User $user, ?User $actor = null)
     {
         $this->user = $user;
         $this->actor = $actor;
