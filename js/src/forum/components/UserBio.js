@@ -4,6 +4,7 @@ import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Button from 'flarum/common/components/Button';
 import classList from 'flarum/common/utils/classList';
 import extractText from 'flarum/common/utils/extractText';
+import 'autolink-js';
 
 /**
  * The `UserBio` component displays a user's bio, optionally letting the user
