@@ -64,17 +64,17 @@ class Formatter extends FlarumFormatter
         return $this;
     }
 
-    public function onEnable(Container $container, Extension $extension)
+    public function onEnable(Container $container, Extension $extension): void
     {
         FormatterServiceProvider::createFormatterInstance($container)->flush();
     }
 
-    public function onDisable(Container $container, Extension $extension)
+    public function onDisable(Container $container, Extension $extension): void
     {
         // do nothing
     }
 
-    public function extend(Container $container, ?Extension $extension = null)
+    public function extend(Container $container, ?Extension $extension = null): void
     {
         $container->extend('fof-user-bio.formatter', function ($formatter, $container) {
             foreach ($this->configurationCallbacks as $callback) {

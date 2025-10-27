@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "flarum/core": "^1.2.0"
+        "flarum/core": "2.x-dev"
     },
     "authors": [
         {
@@ -65,11 +65,11 @@
         }
     },
     "require-dev": {
-        "flarum/bbcode": "*",
-        "flarum/testing": "^1.0.0",
-        "flarum/phpstan": "*",
-        "flarum/suspend": "*",
-        "flarum/gdpr": "dev-main"
+        "flarum/bbcode": "2.x-dev",
+        "flarum/testing": "2.x-dev",
+        "flarum/phpstan": "2.x-dev",
+        "flarum/suspend": "2.x-dev",
+		"flarum/gdpr": "2.x-dev"
     },
     "autoload-dev": {
         "psr-4": {

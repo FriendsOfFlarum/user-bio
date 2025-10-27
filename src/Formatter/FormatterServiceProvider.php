@@ -32,7 +32,7 @@ class FormatterServiceProvider extends AbstractServiceProvider
     {
         return new UserBioFormatter(
             new Repository($container->make('cache.filestore')),
-            $container[Paths::class]->storage.'/formatter',
+            $container[Paths::class]->storage . '/formatter',
             $container->make(ExtensionManager::class)
         );
     }

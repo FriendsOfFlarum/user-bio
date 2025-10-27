@@ -1,7 +1,7 @@
 import app from 'flarum/admin/app';
 
 app.initializers.add('fof-user-bio', () => {
-  app.extensionData
+  app.registry
     .for('fof-user-bio')
     .registerPermission(
       {

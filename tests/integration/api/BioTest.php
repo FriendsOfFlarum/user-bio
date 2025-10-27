@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
 use Flarum\User\User;
+use PHPUnit\Framework\Attributes\Test;
 
 class BioTest extends TestCase
 {
@@ -29,7 +30,7 @@ class BioTest extends TestCase
         $this->extension('fof-user-bio');
 
         $this->prepareDatabase([
-            'users' => [
+            User::class => [
                 $this->normalUser(),
                 [
                     'id'                 => 3,
@@ -95,9 +96,7 @@ class BioTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function admin_can_create_user_with_bio()
     {
         $response = $this->send(
@@ -131,9 +130,7 @@ class BioTest extends TestCase
         $this->assertEquals('This is a test bio.', $user->bio);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function admin_can_create_user_with_bio_formatted()
     {
         $this->setting('fof-user-bio.allowFormatting', true);
@@ -169,9 +166,7 @@ class BioTest extends TestCase
         $this->assertEquals('<t>This is a test formatted bio.</t>', $user->bio);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cannot_update_own_bio_when_permission_not_granted()
     {
         $response = $this->send(
@@ -194,9 +189,7 @@ class BioTest extends TestCase
         $this->assertEquals(403, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function can_update_own_user_with_added_bio_when_permission_granted()
     {
         $this->giveNormalUsersEditOwnPerms();
@@ -226,9 +219,7 @@ class BioTest extends TestCase
         $this->assertEquals('This is a test bio.', $user->bio);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function normal_user_cannot_see_bio_of_other_user_without_permission()
     {
         $response = $this->send(
@@ -246,9 +237,7 @@ class BioTest extends TestCase
         $this->assertArrayNotHasKey('bio', json_decode($response->getBody()->getContents(), true)['data']['attributes']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function normal_user_can_see_others_bio_with_permission()
     {
         $this->giveNormalUserViewBioPerms();
@@ -271,9 +260,7 @@ class BioTest extends TestCase
         $this->assertEquals('This is a test bio for normal2.', $data['data']['attributes']['bio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moderator_can_edit_others_bio_when_permission_granted()
     {
         $this->giveNormalUserViewBioPerms();
@@ -303,9 +290,7 @@ class BioTest extends TestCase
         $this->assertEquals('This is a test bio - edited.', $user->bio);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function normal_user_cannot_edit_bio_of_others_without_permission()
     {
         $response = $this->send(
@@ -328,9 +313,7 @@ class BioTest extends TestCase
         $this->assertEquals(403, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatted_bio_is_returned_as_html_when_formatting_is_allowed()
     {
         // Enable formatting
@@ -354,9 +337,7 @@ class BioTest extends TestCase
         $this->assertStringStartsWith('<p>Bio content', $data['data']['attributes']['bioHtml']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatted_bio_is_returned_as_plain_text_when_formatting_is_not_allowed()
     {
         // Enable formatting
@@ -381,9 +362,7 @@ class BioTest extends TestCase
         $this->assertStringStartsWith('Bio content', $data['data']['attributes']['bio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function plain_text_bio_is_returned_as_is()
     {
         $response = $this->send(
@@ -405,9 +384,7 @@ class BioTest extends TestCase
         $this->assertStringEndsNotWith('>', $data['data']['attributes']['bio']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function response_contains_can_view_and_edit_bio_attributes()
     {
         $this->giveNormalUserViewBioPerms();
