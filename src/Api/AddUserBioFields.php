@@ -42,9 +42,9 @@ class AddUserBioFields
                     // Clean and format the bio text
                     $bio = Str::of($value)->trim();
                     $bio = preg_replace('/\R{3,}/u', "\n\n", $bio);
-                    
+
                     $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
-                    
+
                     if ($allowFormatting) {
                         $user->bio = $this->formatter->parse($bio);
                     } else {
@@ -71,7 +71,7 @@ class AddUserBioFields
     protected function getBio(User $user, Context $context): ?string
     {
         $actor = $context->getActor();
-        
+
         if (!$actor->can('viewBio', $user)) {
             return null;
         }
@@ -86,6 +86,7 @@ class AddUserBioFields
             if (!$allowFormatting || $canEdit) {
                 return $this->formatter->unparse($bio);
             }
+
             return null;
         }
 
@@ -95,7 +96,7 @@ class AddUserBioFields
     protected function getBioHtml(User $user, Context $context): ?string
     {
         $actor = $context->getActor();
-        
+
         if (!$actor->can('viewBio', $user)) {
             return null;
         }

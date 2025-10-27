@@ -31,7 +31,7 @@ class UserBioValidator extends AbstractValidator
         return [
             'bio' => [
                 'string',
-                'max:' . $this->settings->get('fof-user-bio.maxLength', 200),
+                'max:'.$this->settings->get('fof-user-bio.maxLength', 200),
             ],
         ];
     }

@@ -19,13 +19,13 @@ use Flarum\User\User;
 
 return [
     (new Flarum\Frontend('forum'))
-        ->js(__DIR__ . '/js/dist/forum.js')
-        ->css(__DIR__ . '/resources/less/forum.less'),
+        ->js(__DIR__.'/js/dist/forum.js')
+        ->css(__DIR__.'/resources/less/forum.less'),
 
     (new Flarum\Frontend('admin'))
-        ->js(__DIR__ . '/js/dist/admin.js'),
+        ->js(__DIR__.'/js/dist/admin.js'),
 
-    new Flarum\Locales(__DIR__ . '/resources/locale'),
+    new Flarum\Locales(__DIR__.'/resources/locale'),
 
     (new Flarum\Model(User::class))
         ->cast('bio', 'string'),

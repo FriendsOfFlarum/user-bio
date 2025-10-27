@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of fof/user-bio.
  *
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace FoF\UserBio\Tests\integration\api;
 
 use Carbon\Carbon;
@@ -54,18 +56,18 @@ class GdprIntegrationTest extends TestCase
                 'authenticatedAs' => 1,
                 'json'            => [
                     'data' => [
-                        'type' => 'user-erasure-requests',
-                        'id' => '1',
+                        'type'       => 'user-erasure-requests',
+                        'id'         => '1',
                         'attributes' => [
                             'processorComment' => 'I have processed this request',
-                            'processedMode' => ErasureRequest::MODE_ANONYMIZATION,
+                            'processedMode'    => ErasureRequest::MODE_ANONYMIZATION,
                         ],
                     ],
                 ],
             ])
         );
 
-        echo "\n=== DEBUG ===\nStatus: " . $response->getStatusCode() . "\nBody: " . $response->getBody() . "\n=============\n";
+        echo "\n=== DEBUG ===\nStatus: ".$response->getStatusCode()."\nBody: ".$response->getBody()."\n=============\n";
 
         $this->assertEquals(200, $response->getStatusCode());
 
