@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "flarum/core": "2.x-dev"
+        "flarum/core": "^2.0.0"
     },
     "authors": [
         {
@@ -93,5 +93,7 @@
         "test:integration": "Runs all integration tests.",
         "test:setup": "Sets up a database for use with integration tests. Execute this only once.",
         "analyse:phpstan": "Run static analysis"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
