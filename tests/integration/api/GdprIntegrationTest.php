@@ -12,6 +12,7 @@
 namespace FoF\UserBio\Tests\integration\api;
 
 use Carbon\Carbon;
+use Flarum\Gdpr\DataProcessor;
 use Flarum\Gdpr\Models\ErasureRequest;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
@@ -45,6 +46,18 @@ class GdprIntegrationTest extends TestCase
                 ['id' => 1, 'user_id' => 3, 'verification_token' => '123abc', 'status' => 'user_confirmed', 'reason' => 'I also want to be forgotten', 'created_at' => Carbon::now(), 'user_confirmed_at' => Carbon::now()],
             ],
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function bio_is_registered_as_pii_key()
+    {
+        $this->app();
+
+        $keys = $this->app()->getContainer()->make(DataProcessor::class)->getPiiKeysForSerialization();
+
+        $this->assertContains('bio', $keys);
     }
 
     /**
