@@ -13,6 +13,7 @@ namespace FoF\UserBio;
 
 use Flarum\Api\Serializer\UserSerializer;
 use Flarum\Extend as Flarum;
+use Flarum\Gdpr\Extend\UserData;
 use Flarum\Settings\Event\Saved;
 use Flarum\User\Event\Saving;
 use Flarum\User\User;
@@ -47,4 +48,10 @@ return [
 
     (new Flarum\ServiceProvider())
         ->register(Formatter\FormatterServiceProvider::class),
+
+    (new Flarum\Conditional())
+        ->whenExtensionEnabled('flarum-gdpr', fn() => [
+            (new UserData())
+                ->addPiiKeysForSerialization('bio'),
+        ])
 ];
