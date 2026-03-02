@@ -50,8 +50,8 @@ return [
         ->register(Formatter\FormatterServiceProvider::class),
 
     (new Flarum\Conditional())
-        ->whenExtensionEnabled('flarum-gdpr', fn() => [
+        ->whenExtensionEnabled('flarum-gdpr', fn () => [
             (new UserData())
                 ->addPiiKeysForSerialization('bio'),
-        ])
+        ]),
 ];
