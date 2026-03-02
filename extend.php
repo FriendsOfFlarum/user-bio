@@ -52,6 +52,6 @@ return [
     (new Flarum\Conditional())
         ->whenExtensionEnabled('flarum-gdpr', fn () => [
             (new UserData())
-                ->addPiiKeysForSerialization('bio'),
+                ->addType(Data\UserBioData::class),
         ]),
 ];
