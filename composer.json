@@ -70,7 +70,7 @@
         "flarum/testing": "^1.0.0",
         "flarum/phpstan": "*",
         "flarum/suspend": "*",
-        "flarum/gdpr": "^1.8.0"
+        "flarum/gdpr": "^1.8.1"
     },
     "autoload-dev": {
         "psr-4": {
