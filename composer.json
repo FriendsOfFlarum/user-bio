@@ -65,11 +65,11 @@
         }
     },
     "require-dev": {
-        "flarum/bbcode": "2.x-dev",
-        "flarum/testing": "2.x-dev",
-        "flarum/phpstan": "2.x-dev",
-        "flarum/suspend": "2.x-dev",
-		"flarum/gdpr": "2.x-dev"
+        "flarum/bbcode": "^2.0.0",
+        "flarum/testing": "^2.0.0",
+        "flarum/phpstan": "^2.0.0",
+        "flarum/suspend": "^2.0.0",
+		"flarum/gdpr": "^2.0.0"
     },
     "autoload-dev": {
         "psr-4": {
@@ -94,6 +94,6 @@
         "test:setup": "Sets up a database for use with integration tests. Execute this only once.",
         "analyse:phpstan": "Run static analysis"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }
