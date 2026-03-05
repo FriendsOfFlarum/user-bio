@@ -54,6 +54,6 @@ return [
     (new Flarum\Conditional())
         ->whenExtensionEnabled('flarum-gdpr', fn () => [
             (new \Flarum\Gdpr\Extend\UserData())
-                ->addType(Gdpr\UserBioData::class),
+                ->addType(Data\UserBioData::class),
         ]),
 ];
