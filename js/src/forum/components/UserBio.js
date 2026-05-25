@@ -69,10 +69,10 @@ export default class UserBio extends Component {
           </div>
           <div className="UserBio-actions">
             <Button className="Button Button--primary" type="submit">
-              {app.translator.trans('fof-user-bio.forum.profile.save_button')}
+              {app.translator.trans('dcorlette13-flarum-userinfo.forum.profile.save_button')}
             </Button>
             <Button className="Button" type="reset" onclick={this.reset.bind(this)}>
-              {app.translator.trans('fof-user-bio.forum.profile.cancel_button')}
+              {app.translator.trans('dcorlette13-flarum-userinfo.forum.profile.cancel_button')}
             </Button>
           </div>
         </form>
@@ -99,7 +99,7 @@ export default class UserBio extends Component {
         } else if (editable) {
           subContent = (
             <p className="UserBio-placeholder">
-              {app.translator.trans('fof-user-bio.forum.userbioPlaceholder')}
+              {app.translator.trans('dcorlette13-flarum-userinfo.forum.userbioPlaceholder')}
             </p>
           );
         }
@@ -112,7 +112,7 @@ export default class UserBio extends Component {
           onkeydown={editable ? this.onkeydown.bind(this) : undefined}
           role={editable ? 'button' : undefined}
           tabindex={editable ? '0' : undefined}
-          aria-label={editable ? app.translator.trans('fof-user-bio.forum.profile.edit_bio_label') : undefined}
+          aria-label={editable ? app.translator.trans('dcorlette13-flarum-userinfo.forum.profile.edit_bio_label') : undefined}
         >
           {subContent}
         </div>

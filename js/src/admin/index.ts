@@ -1,13 +1,13 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('fof-user-bio', () => {
+app.initializers.add('dcorlette13-flarum-userinfo', () => {
   app.registry
-    .for('fof-user-bio')
+    .for('dcorlette13-flarum-userinfo')
     .registerPermission(
       {
         icon: 'fas fa-pen',
-        label: app.translator.trans('fof-user-bio.admin.permission.view'),
-        permission: 'fof-user-bio.view',
+        label: app.translator.trans('dcorlette13-flarum-userinfo.admin.permission.view'),
+        permission: 'dcorlette13-flarum-userinfo.view',
         allowGuest: true,
       },
       'view'
@@ -15,36 +15,36 @@ app.initializers.add('fof-user-bio', () => {
     .registerPermission(
       {
         icon: 'fas fa-pen',
-        label: app.translator.trans('fof-user-bio.admin.permission.editOwn'),
-        permission: 'fof-user-bio.editOwn',
+        label: app.translator.trans('dcorlette13-flarum-userinfo.admin.permission.editOwn'),
+        permission: 'dcorlette13-flarum-userinfo.editOwn',
       },
       'start'
     )
     .registerPermission(
       {
         icon: 'fas fa-pen',
-        label: app.translator.trans('fof-user-bio.admin.permission.editAny'),
-        permission: 'fof-user-bio.editAny',
+        label: app.translator.trans('dcorlette13-flarum-userinfo.admin.permission.editAny'),
+        permission: 'dcorlette13-flarum-userinfo.editAny',
       },
       'moderate'
     )
     .registerSetting({
-      label: app.translator.trans('fof-user-bio.admin.setting.bioLimit'),
-      setting: 'fof-user-bio.maxLength',
+      label: app.translator.trans('dcorlette13-flarum-userinfo.admin.setting.bioLimit'),
+      setting: 'dcorlette13-flarum-userinfo.maxLength',
       type: 'number',
       placeholder: 200,
     })
     .registerSetting({
-      label: app.translator.trans('fof-user-bio.admin.setting.maxLines'),
-      setting: 'fof-user-bio.maxLines',
+      label: app.translator.trans('dcorlette13-flarum-userinfo.admin.setting.maxLines'),
+      setting: 'dcorlette13-flarum-userinfo.maxLines',
       type: 'number',
       placeholder: 5,
       min: 5,
     })
     .registerSetting({
-      label: app.translator.trans('fof-user-bio.admin.setting.allowFormatting'),
-      help: app.translator.trans('fof-user-bio.admin.setting.allowFormatting_help'),
-      setting: 'fof-user-bio.allowFormatting',
+      label: app.translator.trans('dcorlette13-flarum-userinfo.admin.setting.allowFormatting'),
+      help: app.translator.trans('dcorlette13-flarum-userinfo.admin.setting.allowFormatting_help'),
+      setting: 'dcorlette13-flarum-userinfo.allowFormatting',
       type: 'boolean',
     });
 });

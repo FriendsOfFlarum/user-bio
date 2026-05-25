@@ -1,9 +1,7 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.

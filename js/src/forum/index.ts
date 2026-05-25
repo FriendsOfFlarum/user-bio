@@ -5,6 +5,6 @@ export { default as extend } from './extend';
 
 export * from './components';
 
-app.initializers.add('fof-user-bio', () => {
+app.initializers.add('dcorlette13-flarum-userinfo', () => {
   extendUserCard();
 });

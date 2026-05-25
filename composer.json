@@ -1,48 +1,36 @@
 {
-    "name": "fof/user-bio",
+    "name": "dcorlette13/flarum-userinfo",
     "description": "Add a user bio to user profiles",
     "keywords": [
         "flarum",
-        "Friends of Flarum"
+        "David Corlette"
     ],
     "type": "flarum-extension",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/FriendsOfFlarum/user-bio/issues",
-        "source": "https://github.com/FriendsOfFlarum/user-bio",
-        "forum": "https://discuss.flarum.org/d/17775"
+        "issues": "https://github.com/dcorlette13/flarum-userinfo/issues",
+        "source": "https://github.com/dcorlette13/flarum-userinfo"
     },
-    "homepage": "https://friendsofflarum.org",
-    "funding": [
-        {
-            "type": "website",
-            "url": "https://opencollective.com/fof/donate"
-        }
-    ],
+    "homepage": "https://corlettegtm.com",
     "require": {
         "flarum/core": "^2.0.0"
     },
     "authors": [
         {
-            "name": "Charlie K",
-            "email": "charlie.k@redevs.org",
-            "homepage": "https://redevs.org",
-            "role": "Developer"
-        },
-        {
-            "name": "IanM",
-            "email": "ian@flarum.org",
+            "name": "David Corlette",
+            "email": "dave-ext@corlettegtm.com",
+            "homepage": "https://corlettegtm.com",
             "role": "Developer"
         }
     ],
     "autoload": {
         "psr-4": {
-            "FoF\\UserBio\\": "src/"
+            "dcorlette13\\Flarum-UserInfo\\": "src/"
         }
     },
     "extra": {
         "flarum-extension": {
-            "title": "FoF User Bio",
+            "title": "User Student Info",
             "category": "feature",
             "icon": {
                 "name": "fas fa-pen",
@@ -73,7 +61,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "FoF\\UserBio\\Tests\\": "tests/"
+            "dcorlette13\\Flarum-UserInfo\\Tests\\": "tests/"
         }
     },
     "scripts": {

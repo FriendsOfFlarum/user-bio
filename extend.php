@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
+ * This file is part of dcorlette13/flarum-userinfo.
  *
- * Copyright (c) FriendsOfFlarum.
+ * Copyright (c) dcorlette.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio;
+namespace dcorlette\Flarum-UserInfo;
 
 use Flarum\Api\Resource;
 use Flarum\Extend as Flarum;
@@ -42,10 +42,10 @@ return [
         ->modelPolicy(User::class, Access\UserPolicy::class),
 
     (new Flarum\Settings())
-        ->serializeToForum('fof-user-bio.maxLength', 'fof-user-bio.maxLength', 'intVal')
-        ->serializeToForum('fof-user-bio.maxLines', 'fof-user-bio.maxLines', 'intVal')
-        ->default('fof-user-bio.maxLength', 200)
-        ->default('fof-user-bio.maxLines', 5),
+        ->serializeToForum('dcorlette13-flarum-userinfo.maxLength', 'dcorlette13-flarum-userinfo.maxLength', 'intVal')
+        ->serializeToForum('dcorlette13-flarum-userinfo.maxLines', 'dcorlette13-flarum-userinfo.maxLines', 'intVal')
+        ->default('dcorlette13-flarum-userinfo.maxLength', 200)
+        ->default('dcorlette13-flarum-userinfo.maxLines', 5),
 
     (new Flarum\ServiceProvider())
         ->register(Formatter\FormatterServiceProvider::class),

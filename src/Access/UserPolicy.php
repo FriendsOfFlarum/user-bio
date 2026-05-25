@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * Copyright (c) FriendsOfFlarum.
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Access;
+namespace dcorlette13\Flarum-UserInfo\Access;
 
 use Carbon\Carbon;
 use Flarum\User\Access\AbstractPolicy;
@@ -20,13 +20,13 @@ class UserPolicy extends AbstractPolicy
     public function viewBio(User $actor, User $user)
     {
         // Suspended users won't show their Bio, unless you are allowed to edit any bio.
-        if (!$actor->hasPermission('fof-user-bio.editAny') && $this->isSuspended($user)) {
+        if (!$actor->hasPermission('dcorlette13-flarum-userinfo.editAny') && $this->isSuspended($user)) {
             return $this->deny();
         }
 
         // We only let the user see its own bio if they are also allowed to edit it
-        if (($actor->id === $user->id && $actor->hasPermission('fof-user-bio.editOwn'))
-            || $actor->hasPermission('fof-user-bio.view')
+        if (($actor->id === $user->id && $actor->hasPermission('dcorlette13-flarum-userinfo.editOwn'))
+            || $actor->hasPermission('dcorlette13-flarum-userinfo.view')
         ) {
             return $this->allow();
         }
@@ -37,9 +37,9 @@ class UserPolicy extends AbstractPolicy
     public function editBio(User $actor, User $user)
     {
         if (($actor->id === $user->id
-                && $actor->hasPermission('fof-user-bio.editOwn')
+                && $actor->hasPermission('dcorlette13-flarum-userinfo.editOwn')
                 && !$this->isSuspended($user))
-            || $actor->hasPermission('fof-user-bio.editAny')) {
+            || $actor->hasPermission('dcorlette13-flarum-userinfo.editAny')) {
             return $this->allow();
         }
 

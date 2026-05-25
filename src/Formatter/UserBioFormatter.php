@@ -1,15 +1,13 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Formatter;
+namespace dcorlette13\Flarum-UserInfo\Formatter;
 
 use Flarum\Extension\ExtensionManager;
 use Flarum\Formatter\Formatter;
@@ -32,7 +30,7 @@ class UserBioFormatter extends Formatter
      */
     protected function getComponent($name): mixed
     {
-        $formatter = $this->cache->rememberForever('fof-user-bio.formatter', function () {
+        $formatter = $this->cache->rememberForever('dcorlette13-flarum-userinfo.formatter', function () {
             return $this->getConfigurator()->finalize();
         });
 
@@ -86,6 +84,6 @@ class UserBioFormatter extends Formatter
 
     public function flush(): void
     {
-        $this->cache->forget('fof-user-bio.formatter');
+        $this->cache->forget('dcorlette13-flarum-userinfo.formatter');
     }
 }

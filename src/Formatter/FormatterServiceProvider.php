@@ -1,15 +1,13 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Formatter;
+namespace dcorlette13\Flarum-UserInfo\Formatter;
 
 use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
@@ -21,11 +19,11 @@ class FormatterServiceProvider extends AbstractServiceProvider
 {
     public function register(): void
     {
-        $this->container->singleton('fof-user-bio.formatter', function (Container $container) {
+        $this->container->singleton('dcorlette13-flarum-userinfo.formatter', function (Container $container) {
             return self::createFormatterInstance($container);
         });
 
-        $this->container->alias('fof-user-bio.formatter', UserBioFormatter::class);
+        $this->container->alias('dcorlette13-flarum-userinfo.formatter', UserBioFormatter::class);
     }
 
     public static function createFormatterInstance(Container $container): UserBioFormatter

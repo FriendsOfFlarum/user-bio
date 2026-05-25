@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Api;
+namespace dcorlette13\Flarum-UserInfo\Api;
 
 use Flarum\Api\Context;
 use Flarum\Api\Schema;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use FoF\UserBio\Formatter\UserBioFormatter;
-use FoF\UserBio\Validator\UserBioValidator;
+use dcorlette13\Flarum-UserInfo\Formatter\UserBioFormatter;
+use dcorlette13\Flarum-UserInfo\Validator\UserBioValidator;
 use Illuminate\Support\Str;
 
 class AddUserBioFields

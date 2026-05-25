@@ -1,20 +1,18 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette13\Flarum-UserInfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Extend;
+namespace dcorlette13\Flarum-UserInfo\Extend;
 
 use Flarum\Extend\Formatter as FlarumFormatter;
 use Flarum\Extension\Extension;
 use Flarum\Foundation\ContainerUtil;
-use FoF\UserBio\Formatter\FormatterServiceProvider;
+use dcorlette13\Flarum-UserInfo\Formatter\FormatterServiceProvider;
 use Illuminate\Contracts\Container\Container;
 
 class Formatter extends FlarumFormatter
@@ -76,7 +74,7 @@ class Formatter extends FlarumFormatter
 
     public function extend(Container $container, ?Extension $extension = null): void
     {
-        $container->extend('fof-user-bio.formatter', function ($formatter, $container) {
+        $container->extend('dcorlette13-flarum-userinfo.formatter', function ($formatter, $container) {
             foreach ($this->configurationCallbacks as $callback) {
                 $formatter->addConfigurationCallback(ContainerUtil::wrapCallback($callback, $container));
             }

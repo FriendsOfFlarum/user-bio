@@ -1,15 +1,13 @@
 <?php
 
 /*
- * This file is part of fof/user-bio.
- *
- * Copyright (c) FriendsOfFlarum.
+ * This file is part of dcorlette/flarum-userinfo.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace FoF\UserBio\Tests\integration\api;
+namespace dcorlette13\Flarum-UserInfo\Tests\integration\api;
 
 use Carbon\Carbon;
 use Flarum\Gdpr\Models\ErasureRequest;
@@ -27,7 +25,7 @@ class GdprIntegrationTest extends TestCase
         parent::setUp();
 
         $this->extension('flarum-gdpr');
-        $this->extension('fof-user-bio');
+        $this->extension('dcorlette13-flarum-userinfo');
 
         $this->prepareDatabase([
             User::class => [
