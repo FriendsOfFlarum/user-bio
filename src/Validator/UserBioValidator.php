@@ -30,9 +30,10 @@ class UserBioValidator extends AbstractValidator
     {
         return [
             'bio' => [
+                'nullable',
                 'string',
-                'max:'.$this->settings->get('fof-user-bio.maxLength', 200),
+                'regex:/^(\d{4}(,\d{4})*)?$/',
             ],
         ];
     }
-}
+}   

@@ -36,20 +36,9 @@ class AddUserBioFields
                 ->get(fn (User $user, Context $context) => $this->getBio($user, $context))
                 ->writable(fn (User $user, Context $context) => $context->getActor()->can('editBio', $user))
                 ->set(function (User $user, string $value, Context $context) {
-                    // Validate the bio input
+                    // Validate only year values in a comma-separated list
                     $this->validator->assertValid(['bio' => $value]);
-
-                    // Clean and format the bio text
-                    $bio = Str::of($value)->trim();
-                    $bio = preg_replace('/\R{3,}/u', "\n\n", $bio);
-
-                    $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
-
-                    if ($allowFormatting) {
-                        $user->bio = $this->formatter->parse($bio);
-                    } else {
-                        $user->bio = $bio;
-                    }
+                    $user->bio = $value;
                 })
                 ->visible(fn (User $user, Context $context) => $context->getActor()->can('viewBio', $user)),
 
@@ -70,45 +59,15 @@ class AddUserBioFields
 
     protected function getBio(User $user, Context $context): ?string
     {
-        $actor = $context->getActor();
-
-        if (!$actor->can('viewBio', $user)) {
+        if (!$context->getActor()->can('viewBio', $user)) {
             return null;
         }
-
-        $bio = $user->bio ?? '';
-        $isXML = str_starts_with($bio, '<') && str_ends_with($bio, '>');
-        $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
-        $canEdit = $actor->can('editBio', $user);
-
-        if ($isXML) {
-            // Show unparsed bio if formatting disabled or user can edit
-            if (!$allowFormatting || $canEdit) {
-                return $this->formatter->unparse($bio);
-            }
-
-            return null;
-        }
-
-        return $bio;
+        return $user->bio ?? '';
     }
 
     protected function getBioHtml(User $user, Context $context): ?string
     {
-        $actor = $context->getActor();
-
-        if (!$actor->can('viewBio', $user)) {
-            return null;
-        }
-
-        $bio = $user->bio ?? '';
-        $isXML = str_starts_with($bio, '<') && str_ends_with($bio, '>');
-        $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
-
-        if ($isXML && $allowFormatting) {
-            return $this->formatter->render($bio);
-        }
-
+        // No HTML rendering needed for plain year lists
         return null;
     }
 }
