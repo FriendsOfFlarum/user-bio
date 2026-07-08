@@ -48,7 +48,7 @@ class AuditTest extends TestCase
     {
         $response = $this->send($this->request('PATCH', '/api/users/3', [
             'authenticatedAs' => 1,
-            'json' => [
+            'json'            => [
                 'data' => [
                     'attributes' => [
                         'bio' => 'Hello World',
