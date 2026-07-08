@@ -16,6 +16,7 @@ use Flarum\Extend as Flarum;
 use Flarum\Settings\Event\Saved;
 use Flarum\User\Event\Saving;
 use Flarum\User\User;
+use FoF\UserBio\Event\BioChanged;
 
 return [
     (new Flarum\Frontend('forum'))
@@ -55,5 +56,12 @@ return [
         ->whenExtensionEnabled('flarum-gdpr', fn () => [
             (new \Flarum\Gdpr\Extend\UserData())
                 ->addType(Data\UserBioData::class),
+        ]),
+
+    (new Flarum\Conditional())
+        ->whenExtensionEnabled('flarum-audit', fn () => [
+            (new \Flarum\Audit\Extend\Audit())
+                ->group('fof-user-bio')
+                ->listen(BioChanged::class, 'user.bio_changed', fn ($e) => ['user_id' => $e->user->id]),
         ]),
 ];
