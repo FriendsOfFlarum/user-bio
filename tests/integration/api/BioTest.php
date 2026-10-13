@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
 use Flarum\User\User;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class BioTest extends TestCase
@@ -217,6 +218,45 @@ class BioTest extends TestCase
         $user = User::where('id', 2)->firstOrFail();
 
         $this->assertEquals('This is a test bio.', $user->bio);
+    }
+
+    #[Test]
+    #[DataProvider('formattingSettings')]
+    public function saved_bio_is_trimmed_with_blank_lines_collapsed(bool $allowFormatting)
+    {
+        $this->setting('fof-user-bio.allowFormatting', $allowFormatting);
+        $this->giveNormalUsersEditOwnPerms();
+
+        $response = $this->send(
+            $this->request(
+                'PATCH',
+                '/api/users/2',
+                [
+                    'authenticatedAs' => 2,
+                    'json'            => [
+                        'data' => [
+                            'attributes' => [
+                                'bio' => "  First line\n\n\n\n\nSecond line  ",
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $json = json_decode($response->getBody()->getContents(), true);
+
+        $this->assertEquals("First line\n\nSecond line", $json['data']['attributes']['bio']);
+    }
+
+    public static function formattingSettings(): array
+    {
+        return [
+            'plain text' => [false],
+            'formatted'  => [true],
+        ];
     }
 
     #[Test]
