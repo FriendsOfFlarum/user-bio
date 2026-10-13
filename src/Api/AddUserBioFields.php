@@ -40,8 +40,7 @@ class AddUserBioFields
                     $this->validator->assertValid(['bio' => $value]);
 
                     // Clean and format the bio text
-                    $bio = Str::of($value)->trim();
-                    $bio = preg_replace('/\R{3,}/u', "\n\n", $bio);
+                    $bio = Str::of($value)->trim()->replaceMatches('/\R{3,}/u', "\n\n")->toString();
 
                     $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
 

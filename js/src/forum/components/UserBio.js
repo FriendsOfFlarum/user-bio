@@ -211,9 +211,12 @@ export default class UserBio extends Component {
       user
         .save({ bio: value })
         .catch(() => {
+          // The request has shown its error. Reopen the editor with what was
+          // written, and draw it now, while `tempBio` is still set to fill it.
           this.tempBio = value;
           this.tempSelector = tempSelector;
-          this.edit();
+          this.editing = true;
+          m.redraw.sync();
         })
         .then(() => {
           this.loading = false;
