@@ -54,4 +54,4 @@ export default class UserBio extends Component<any, undefined> {
      */
     countTextLengthBefore(anchorNode: Node): number;
 }
-import Component from "flarum/common/Component";
+import Component from 'flarum/common/Component';
