@@ -55,7 +55,6 @@ class SaveUserBio
         $actor = $event->actor;
 
         $attributes = Arr::get($data, 'attributes', []);
-        $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
 
         if (isset($attributes['bio'])) {
             $actor->assertCan('editBio', $user);
@@ -65,11 +64,12 @@ class SaveUserBio
             $bio = Str::of($attributes['bio'])->trim();
             $bio = preg_replace('/\R{3,}/u', "\n\n", $bio);
 
-            if ($allowFormatting) {
-                $user->bio = $this->formatter->parse($bio);
-            } else {
-                $user->bio = $bio;
-            }
+            // Always store parsed formatter output, even when formatting is
+            // disabled. Parsing escapes raw markup, so a bio saved while formatting
+            // is off can never be rendered as HTML later if an admin enables
+            // formatting. Storing the raw value was a stored-XSS vector
+            // (GHSA-gfwx-4xmc-5hp4).
+            $user->bio = $bio === '' ? '' : $this->formatter->parse($bio);
 
             if ($user->isDirty('bio')) {
                 $user->raise(new BioChanged($user));
