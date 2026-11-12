@@ -39,16 +39,15 @@ class AddUserBioFields
                     // Validate the bio input
                     $this->validator->assertValid(['bio' => $value]);
 
-                    // Clean and format the bio text
+                    // Clean the bio text
                     $bio = Str::of($value)->trim()->replaceMatches('/\R{3,}/u', "\n\n")->toString();
 
-                    $allowFormatting = $this->settings->get('fof-user-bio.allowFormatting', false);
-
-                    if ($allowFormatting) {
-                        $user->bio = $this->formatter->parse($bio);
-                    } else {
-                        $user->bio = $bio;
-                    }
+                    // Always store parsed formatter output, even when formatting is
+                    // disabled. Parsing escapes raw markup, so a bio saved while
+                    // formatting is off can never be rendered as HTML later if an admin
+                    // enables formatting. Storing the raw value was a stored-XSS vector
+                    // (GHSA-gfwx-4xmc-5hp4).
+                    $user->bio = $bio === '' ? '' : $this->formatter->parse($bio);
                 })
                 ->visible(fn (User $user, Context $context) => $context->getActor()->can('viewBio', $user)),
 
